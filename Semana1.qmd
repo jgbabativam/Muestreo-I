@@ -1,0 +1,896 @@
+---
+title: "Muestreo Probabilístico"
+subtitle: "Maestría en Estadística y Ciencia de datos"
+author: "[Giovany Babativa, PhD](http://jgbabativam.rbind.io/)"
+format: 
+  gbabativa-revealjs:
+    footer: "Diapositivas disponibles en [GitHub](https://github.com/jgbabativam)."
+    logo: "images/UNIVlogo.png"
+incremental: false
+embed-resources: true
+highlight-style: dracula
+execute: 
+  echo: false
+  eval: true
+filters:
+  - webr
+revealjs-plugins:
+  - drop
+---
+
+## Sobre Mi
+
+<div style="text-align: justify;">
+
+PhD en Estadística, MSc en Big Data, MSc en Estadística.  Con 20 años de experiencia, actual director de analítica en el CNC, miembro del comité de expertos en pobreza en el DANE y consultor de la División de Estadística de la CEPAL. Ex-decano de la Facultad de Estadística USTA, ex-director de operaciones en el ICFES,...
+
+> Puedes encontrarme en:
+
+- {{< ai google-scholar >}} [Google scholar](https://scholar.google.es/citations?user=2NJRNg8AAAAJ&hl=es)
+- {{< fa brands github >}} [GitHub. https://github.com/jgbabativam](https://github.com/jgbabativam)
+- {{< fa brands linkedin >}} [linkedin](https://www.linkedin.com/in/giovany-babativa-marquez/?originalSubdomain=co)
+- {{< fa solid envelope >}} j.babativamarquez@uniandes.edu.co
+
+</div>
+
+## Reglas del juego
+
+::: columns
+::: {.column width="50%"}
+
+::: {.incremental}
+
+<br><br>
+
+* Fechas y esquema de las sesiones.
+
+* Mecanismo de evaluación.
+
+* Temas de exposición y grupos de trabajo.
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+<br><br>
+
+![](images/Rules_img.jpg){fig-align="center" width="100%"}
+
+:::
+
+:::
+
+
+
+## Proceso de analítica
+
+
+```{r, out.width= '100%'}
+knitr::include_graphics(here::here("images/Ciclo.png"))
+```
+[Wickham, H. y otros (2023)](https://r4ds.hadley.nz/)
+
+
+## Paquete R
+
+::: columns
+::: {.column width="50%"}
+
+::: {.incremental}
+
+* Paquete de uso libre
+
+* Tiene todos los métodos que necesitamos
+
+* Incluye paquetes específicos en muestreo como `TeachingSampling`, `samplesize4surveys`, `survey`, `srvyr`, `sampling`, etc
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+![](images/R_logo.png){fig-align="center" fig-alt="R logo" width="80%"}
+
+:::
+
+:::
+
+## Etapas del proceso
+
+![](images/Homerostats.jpeg){fig-align="center"}
+
+## El entorno `tidyverse`
+
+![](images/tidyverse.png){fig-align="center"}
+
+## Flujo de trabajo
+
+![](images/tidyverse2.png){fig-align="center"}
+
+
+# ANTECEDENTES Y JUSTIFICACIÓN {background-color="#0077b6"}
+
+## Sir Francis Galton (1822-1911)
+
+::: columns
+::: {.column width="70%"}
+
+::: {.incremental}
+
+<div style="text-align: justify;">
+
+* **Galton** hizo importantes contribuciones en muchos campos de la ciencia, incluyendo la meteorología (mapas meteorológicos), la estadística (regresión y correlación), la psicología (sinestesia), la biología (mecanismo de la herencia) y la criminología (huellas dactilares).
+
+* Fue el primero en introducir el uso de cuestionarios y encuestas para recopilar datos sobre comunidades humanas.
+
+</div>
+
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<br>
+
+![](images/Galton.jpeg){fig-align="center" fig-alt="R logo" width="80%"}
+
+:::
+
+:::
+
+
+## Jerzy Neyman (1894-1981)
+
+::: columns
+::: {.column width="70%"}
+
+::: {.incremental}
+
+<div style="text-align: justify;">
+
+* Introdujo las reglas de probabilidad en la selección de muestras.
+
+* Neyman, J.(1934). On the two different aspects of the representative method: The method of stratified sampling and the method of purposive selection, Journal of the Royal Statistical Society: Series B, 97 (4), 557–625.
+
+</div>
+
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<br>
+
+![](images/Neyman.jpeg){fig-align="center" fig-alt="R logo" width="80%"}
+
+:::
+
+:::
+
+## Morris Hansen (1910-1990)
+
+::: columns
+::: {.column width="70%"}
+
+::: {.incremental}
+
+<div style="text-align: justify;">
+
+* Implementó los diseños de muestreo en la Oficina del Censo y la Oficina de Estadísticas Laborales de EEUU.  
+* Pionero en establecer el Muestreo de Encuestas como un estándar de excelencia para la recolección de datos en agencias gubernamentales.  
+
+* Olkin, I. (1987). Una conversación con Morris Hansen. *Statistical Science* 2, 162-179
+
+</div>
+
+:::
+
+:::
+
+::: {.column width="30%"}
+
+<br>
+
+![](images/Hansen.jpg){fig-align="center" fig-alt="R logo" width="100%"}
+
+:::
+
+:::
+
+## ¿Por qué hacer muestreo?
+
+* Reducción de costos (eficiencia).
+
+* Obtener información rápida (tiempo). 
+
+* En ocasiones es la única forma de obtener información (procesos de control de calidad).
+
+* ¿Cualquier muestra es buena?. ¿Es suficiente con que la muestra sea muy grande? 
+
+* Para usted, ¿cuál es un tamaño de muestra adecuado?, ¿cuáles cree que son los factores que afectan el tamaño de muestra? 
+
+
+```{r}
+library(countdown)
+countdown(minutes = 4, seconds = 30,  right = 0)
+```
+
+## Temas que se alcanzan en este curso
+
+* Conceptos básicos en el muestreo probabilístico
+* Muestreo Aleatorio Simple
+* Uso de información auxiliar: Muestreo Sistemático, PPT, $\pi$PT, estratificado.
+* Estimadores de Horvitz-Thompson y Hansen-Hurwitz
+* Estimación de la incertidumbre
+* Muestreo por conglomerados y de varias etapas
+
+```{r}
+library(countdown)
+countdown(minutes = 3, seconds = 00,  right = 0)
+```
+
+## Temas que NO se alcanzan a ver en este curso
+
+* Estimadores usando información auxiliar
+* Estrategias de estratificación
+* Métodos de calibración
+* Ajustes por la ausencia de respuesta
+* Estimación de la varianza usando métodos replicados
+* Diseños de muestreo en evaluaciones de impacto o de resultados
+* Modelos de estimación en áreas pequeñas (SAE)
+
+```{r}
+library(countdown)
+countdown(minutes = 3, seconds = 00,  right = 0)
+```
+
+# INTRODUCCIÓN {background-color="#0077b6"}
+
+## Esquema de muestreo
+
+```{r,  out.width= '110%'}
+knitr::include_graphics(here::here("images/Esquema1.png"))
+```
+
+## Esquema de muestreo
+
+```{r,  out.width= '110%'}
+knitr::include_graphics(here::here("images/Esquema2.png"))
+```
+
+
+## Esquema de muestreo
+
+```{r,  out.width= '110%'}
+knitr::include_graphics(here::here("images/Esquema3.png"))
+```
+
+
+## El multiverso y la incertidumbre
+
+```{r,  out.width= '110%'}
+knitr::include_graphics(here::here("images/Esquema4.png"))
+```
+
+
+## Proceso de estimación:
+
+
+::: columns
+::: {.column .right width="50%"}
+
+<br><br><br>
+
+"Todos los modelos son errados pero algunos son útiles"
+
+<br>
+
+George Box (1919 - 2013). 
+
+:::
+
+::: {.column width="50%"}
+
+![](images/GeorgeEPBox.jpg){fig-align="center" fig-alt="CHICAS logo" width=70%}
+
+:::
+:::
+
+## Proceso de estimación
+
+```{r,  out.width= '110%'}
+knitr::include_graphics(here::here("images/Esquema5.png"))
+```
+
+## Discusión
+
+Discutamos los siguientes conceptos por 5 minutos:
+
+- Aleatoriedad
+- Variable aleatoria
+- Población
+- Muestra
+- Incertidumbre
+- Confiabilidad
+
+```{r}
+library(countdown)
+countdown(minutes = 5, seconds = 00,  right = 0)
+
+# countdown(minutes = 1, seconds = 30,
+#           left = 0, right = 0,
+#           padding = "50px",
+#           margin = "5%",
+#           font_size = "6em")
+```
+
+## Decisiones previas al muestreo
+
+- Propósito del estudio
+- Población de interés
+- Disponibilidad de bases de datos
+- Instrumentos de medición
+- Tipo de levantamiento de información
+- Prueba piloto
+
+
+## Conceptos básicos
+
+<br>
+
+<div style="text-align: justify;">
+
+**Universo ideal**: Se trata del conjunto sobre el cual el investigador y no propiamente el muestrista pretende obtener algún tipo de información. <span style="color:#FF8D21"> Definir Alcance: Ej. Intención de voto - ¿Rural?</span>
+
+<br>
+
+**Población Objetivo**: Constituye el conjunto de elementos que partiendo del universo ideal pueden ser realmente alcanzados por la investigación. Lo anterior se puede dar por razones operativas, políticas, económicas, etc.
+
+</div>
+
+## Conceptos básicos
+
+<br>
+
+<div style="text-align: justify;">
+
+**Marco Muestral**: Dispositivo que permite  <span style="color:#FF8D21"> **IDENTIFICAR y UBICAR** </span> a todos los elementos de la población objetivo. 
+
+</div>
+
+- Lista de estudiantes de esta clase.
+- Lista de beneficiarios de un programa. 
+- Listado de municipios del país. 
+
+<span style="color:red"> **TAREA**:</span> Investigue qué es y cómo se obtiene el Marco Geoestadístico Nacional (MGN).
+
+## Conceptos básicos
+
+<div style="text-align: justify;">
+**Operación estadística**
+
+Es la aplicación del conjunto de procesos y actividades que comprende la identificación de necesidades, diseño, construcción, recolección o acopio, procesamiento, análisis, difusión y evaluación, la cual conduce a la producción de información estadística sobre un tema de interés nacional o territorial.
+
+</div>
+
+. . . 
+
+<br>
+
+<div style="text-align: justify;">
+**Unidades estadísticas**
+
+Entidad acerca de la que se busca información y para la que se compilan las estadísticas. Puede dividirse en las siguientes categorías: unidad de observación, unidades de análisis y unidad de muestreo.
+
+</div>
+
+## Conceptos básicos
+
+<div style="text-align: justify;">
+
+- **Muestra**: Subconjunto de la población.
+- **Unidad de muestreo**: Objeto o elemento susceptible de ser seleccionado en la muestra.
+- **Unidad de Observación**: Es el objeto sobre el cual se realiza al menos una medición.
+- **Unidad de Análisis**: Elemento de estudio sobre el que se presentan los resultados o las conclusiones de la operación estadística.
+
+</div>
+
+
+## Conceptos básicos
+
+<div style="text-align: justify;">
+
+- **Elemento**: Unidad individual sobre las que se realizan mediciones.
+- **Conglomerado**: Agrupación de elementos.
+- **Error de muestreo**: Es el imputable a la aleatoriedad de la muestra.
+- **Error de no muestreo**: Son consecuencia de definiciones conceptuales incorrectas, de fallos en los instrumentos de medida, en la entrevista o en el desarrollo del trabajo de campo.
+
+</div>
+
+## Conceptos básicos
+
+**Variables de interés**
+
+<div style="text-align: justify;">
+
+Regularmente se denotan como $y_k$, $z_k$ o $x_k$, y sobre estas se definen los parámetros a investigar que pueden ser: Totales, razones, proporciones, indicadores, índices. 
+
+<br>
+
+Por ejemplo, total de personas desempleadas, total de personas que consumen un producto, proporción de personas que votarán por el candidato A, proporción de hogares en pobreza condición de pobreza extrema, ventas por $m^2$, promedio de ingresos de los hogares.
+
+</div>
+
+## Tu turno
+
+<br><br>
+
+Identifique:
+
+- Universo
+- Muestra
+- Unidades estadísticas
+- Variables
+- Parámetros de interés
+
+
+## Ejemplo 1: Clima escolar
+
+
+<div style="text-align: justify;">
+
+<br><br>
+
+La SED realizó una investigación en los colegios oficiales de la ciudad de Bogotá D.C. con el fin de medir el clima escolar de las instituciones, para ello usó una muestra de 658 sedes educativas, en las cuales se seleccionaron estudiantes de los grados 3°, 5°, 7° y 9° para aplicar un instrumento donde se indagan, entre otros, los aspectos sobre el bulling, relaciones sociales, nivel de satisfacción con la sede educativa. 
+
+</div>
+
+## Ejemplo 2: Intención de voto
+
+
+<div style="text-align: justify;">
+
+Una campaña política para la Presidencia de la República realizó una investigación para establecer las estrategias a seguir. Para ello se dividió al país en 7 regiones, y dentro de cada una se dividieron los municipios en tres tipos: grandes, medianos y pequeños. Dentro de cada tipo se seleccionó una muestra de municipios, dentro de los municipios seleccionados se usó el MGN para seleccionar segmentos, hogares y finalmente personas. La muestra consideró a 6430 personas con edad para votar en 89 municipios, los cuales respondieron por el conocimiento de los candidatos, la intención de voto y los aspectos que consideran que actualmente son los principales problemas del país.  
+
+</div>
+
+
+
+## Tipos de muestreo
+
+Existen dos grandes categorías de métodos de muestreo
+
+::: columns
+::: {.column width="60%"}
+
+::: {.incremental}
+
+<div style="text-align: justify;">
+
+<span style="font-size:22pt">**Muestreo probabilístico:** Implica que todos los elementos de una población objetivo tienen una probabilidad CONOCIDA  a priori de ser seleccionados y que al momento de la selección se aplica un algoritmo aleatorio que garantiza que dichas probabilidades se cumplan. Permite <span style="color:#FF8D21">**generalizar los resultados a toda la población pero son costosos**</span></span>
+
+</div>
+
+:::
+
+:::
+
+::: {.column width="40%"}
+
+
+![](images/Probabilisticos.png){fig-align="center" width="100%"}
+<span style="font-size:8pt">**Figura:** Fuente de la imagen: [Scribbr - Sampling Methods](https://www.scribbr.com/methodology/sampling-methods/)</span>
+
+:::
+
+:::
+
+
+## Tipos de muestreo
+
+Existen dos grandes categorías de métodos de muestreo
+
+::: columns
+::: {.column width="60%"}
+
+::: {.incremental}
+
+<div style="text-align: justify;">
+
+<span style="font-size:22pt">**Muestreo NO probabilístico:** Son todas las demás muestras donde el investigador puede influenciar la selección o debido a la inexistencia de un marco muestral o por ser un target de difícil consecución no es posible conocer las probabilidades a priori. <span style="color:#FF8D21"> **No es posible hacer inferencia a la población**, es de bajo costo y fácil aplicación.</span></span>
+
+</div>
+
+:::
+
+:::
+
+::: {.column width="40%"}
+
+![](images/NoProbabilisticos.png){fig-align="center" width="100%" fig-cap="Fuente: [Sampling Methods](https://conceptshacked.com/probability-sampling/)"}
+<span style="font-size:8pt">**Figura:** Fuente de la imagen: [Sampling Methods](https://conceptshacked.com/probability-sampling/)</span>
+
+
+:::
+
+:::
+
+
+## Tipos de muestreo
+
+
+
+```{r}
+library(ggflowchart)
+library(ggplot2)
+data <- tibble::tibble(from = c(rep("Tipos de Muestreo", 2), 
+                                rep("No Probabilístico", 4),
+                                rep("Probabilístico", 4)),
+                       to = c("No Probabilístico", "Probabilístico", 
+                              "Bola de nieve", "Conveniencia", "Juicio", "Cuotas",
+                              "Estratificado", "PPT", "Bernoulli", "MAS"))
+ggflowchart(data, horizontal = TRUE, 
+            arrow_colour = "darkblue", colour = "black",
+            text_colour = "white", fill = "blue") 
+```
+
+# MUESTREO PROBABILÍSTICO {background-color="#0077b6"}
+
+## Notación
+
+<br><br>
+
+<div style="text-align: justify;">
+
+Defina a $U$ un universo^[En adelante se denominará universo a la población objetivo.] de elementos $\{U_1,\ldots,U_N\}$ **finito** y **conocido** de antemano con una variable de interés $Y$ que toma valores $\{y_1,\ldots,y_N\}$. Sea el parámetro $\theta$ (medida del universo) una función de $(y_1,\ldots,y_N)$ de esta manera a $\theta(y_1,\ldots,y_N)$ se denomina parámetro y se denota $\theta$.
+
+</div> 
+
+## Conceptos básicos
+
+<br>
+
+Algunos parámetros de interés en un estudio por muestreo:
+
+- **Total**: Ocupados, Desocupados, Pobreza Extrema, Consumidores de SPA, ...
+
+$$t_y=\sum_Uy_k$$
+
+## Conceptos básicos
+
+<br>
+
+Algunos parámetros de interés en un estudio por muestreo:
+
+- **Promedio**: Promedio de ingresos, promedio de ventas,...
+
+$$\overline{y}_U=\frac{1}{N}\sum_Uy_k$$
+
+
+## Conceptos básicos
+
+<br>
+
+Algunos parámetros de interés en un estudio por muestreo:
+
+- **Razón**: Tasa de ocupación, tasa de desempleo, consumo de gasolina de un auto (Km por galón),...
+
+$$R=\frac{\sum_Uy_k}{\sum_Uz_k}=\frac{t_y}{t_z}$$
+
+## Conceptos básicos
+
+<br><br>
+
+Sea $s$ una muestra de elementos con mediciones $y_1,\ldots,y_{n_s}$. Se define el estimador $\widehat{\theta}$, como una función de los valores de la muestra que es construido de tal manera que apunte al valor del parámetro $\theta$.
+
+
+## Estimadores
+
+
+**Estimador del total**
+
+$$\widehat{t}_y = ?$$
+
+
+**Estimador del promedio**
+
+$$\overline{y}_s=\frac{1}{n_s}\sum_sy_k; \hspace{1.0cm} \widetilde{y}_s=\sqrt[n_s]{\prod_sy_k}$$
+
+. . . 
+
+Note que la proporción, promedio y razón son casos particulares de la estimación de un total.
+
+## Propiedades de un estimador
+
+<br>
+
+¿Qué buscamos en un estimador?
+
+. . . 
+
+
+- *Insesgado*: $\mathbb{E}(\widehat{\theta})=\theta$
+- *Mínima Varianza*: $\mathbb{V}(\widehat{\theta})\rightarrow 0$
+- $ \$ \downarrow$
+
+
+## Estimación de la incertidumbre
+
+<div style="text-align: justify;">
+
+Si $\widehat{\theta}$ es una función basada en una suma de variables aleatorias independientes el teorema central de límite permite encontrar una expresión para la estimación por intervalo bajo ciertas condiciones de regularidad. En caso de que $\mathbb{E}(\widehat{\theta})=\theta$ se espera con una confiabilidad del $(1-\alpha)100\%$ que:
+$$\theta \in \left(\widehat{\theta}-z_{1-\alpha/2}\sqrt{V(\widehat{\theta})}, \widehat{\theta}+z_{1-\alpha/2}\sqrt{V(\widehat{\theta})}\right),$$
+
+en donde $z_{1-\alpha/2}$ es el percentil correspondiente en una distribución normal estándar.
+
+</div> 
+
+## Observaciones
+
+- Lo que se distribuye normal es el estadístico y no la variable de interés.
+- La distribución de la variable de interés es invariante independiente del tamaño de muestra.
+- Para estudios en tendencia no es suficiente con comparar estimaciones puntuales, sino que debe hacerse la prueba de hipótesis correspondiente para determinar si existe diferencia significativa. Ejemplo: Tasa de desempleo.
+
+## Ejercicio: TCL
+
+<br><br><br>
+
+Simule 100 muestra de tamaño 1000 proveniente de una distribución uniforme en $(0,1)$. Calcule el estadístico $\bar{y}_s$ para cada una de las 100 muestras y realice los histogramas para $n=5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100$. Concluya.
+
+## Solución
+
+**Paso 1**: Construir el marco de datos con los valores
+
+```{webr-r}
+#| echo: true
+filas <- 1000
+columnas <- 100
+
+set.seed(123456)
+df <- as.data.frame(matrix(runif(filas * columnas), 
+                           nrow = filas, ncol = columnas))
+
+head(df)
+```
+
+
+## Solución
+
+Veamos la distribución de $y$ en algunas de las muestras
+
+```{webr-r}
+#| echo: true
+library(ggplot2)
+library(patchwork)
+
+p1 <- df |> ggplot(aes(x=V1)) + geom_density(color = "#000000", fill = "#0099F8")
+p2 <- df |> ggplot(aes(x=V2)) + geom_density(color = "#000000", fill = "#0099F8")
+p3 <- df |> ggplot(aes(x=V99)) + geom_density(color = "#000000", fill = "#0099F8")
+
+
+(p1 | p2 | p3)
+```
+
+## Solución
+
+¿Cómo es la distribución de $\sum_sy_k$?
+
+```{webr-r}
+#| echo: true
+library(tidyverse)
+library(glue)
+
+df2 <- df |> 
+       summarise(across(where(is.numeric), ~sum(.))) |> 
+       pivot_longer(everything(), names_to = "variable", values_to = "suma")
+
+densidad <- function(data, n){
+  data |> 
+    slice(1:n) |> 
+    ggplot(aes(x=suma)) + 
+    geom_density(color = "#000000", fill = "#0099F8") +
+    labs(title = glue("n = {n}"))
+}
+
+h5 <- densidad(df2, n = 5);      h10 <- densidad(df2, n = 10)
+h15 <- densidad(df2, n = 15);    h20 <- densidad(df2, n = 20)
+h25 <- densidad(df2, n = 25);    h30 <- densidad(df2, n = 30)
+h50 <- densidad(df2, n = 50);    h60 <- densidad(df2, n = 60)
+h80 <- densidad(df2, n = 80);    h100 <- densidad(df2, n = 100)
+
+(h5 | h10 | h15 | h20) / (h25 | h30 | h50 | h60) / (h80 | h100)
+```
+
+## Solución
+
+¿Cómo es la distribución de $\sum_sy_k$?
+
+```{r}
+#| echo: false
+
+library(pacman)
+p_load(tidyverse, patchwork, glue)
+filas <- 1000
+columnas <- 100
+
+set.seed(123456)
+df <- as.data.frame(matrix(runif(filas * columnas), 
+                           nrow = filas, ncol = columnas))
+
+df2 <- df |> 
+       summarise(across(where(is.numeric), ~sum(.))) |> 
+       pivot_longer(everything(), names_to = "variable", values_to = "suma")
+
+densidad <- function(data, n){
+  data |> 
+    slice(1:n) |> 
+    ggplot(aes(x=suma)) + 
+    geom_density(color = "#000000", fill = "#0099F8") +
+    labs(title = glue("n = {n}"))
+}
+
+h5 <- densidad(df2, n = 5);      h10 <- densidad(df2, n = 10)
+h15 <- densidad(df2, n = 15);    h20 <- densidad(df2, n = 20)
+h25 <- densidad(df2, n = 25);    h30 <- densidad(df2, n = 30)
+h50 <- densidad(df2, n = 50);    h60 <- densidad(df2, n = 60)
+h80 <- densidad(df2, n = 80);    h100 <- densidad(df2, n = 100)
+
+(h5 | h10 | h15 | h20) / (h25 | h30 | h50 | h60) / (h80 | h100)
+```
+
+## Diseño muestral
+
+**Definición:**
+
+Sea $s \subseteq U$ una muestra probabilística y sea $S$ el conjunto de todas las muestras posibles. La función de medida de probabilidad:
+
+\begin{align*}
+\mathbf{P}: & S \rightarrow (0,1) \\
+& s_i \mapsto p(s_i)
+\end{align*}
+
+Dado el conjunto $S$, un **diseño de muestreo** es una función $p(\cdot)$, tal que $p(s_i)$ es la probabilidad de que la muestra $i$ sea la seleccionada.
+
+## Muestreo Aleatorio Simple: $MAS(N, n)$
+
+Un diseño de muestreo es aleatorio simple si:
+
+\begin{equation}
+p(s_i)=\begin{cases} \frac{1}{\binom{N}{n}} \hspace{0.5cm} \forall \textit{$s$ de tamaño $n$ de $N$ sin repocisión} \\
+\hspace{0.2cm} 0 \hspace{0.7cm} \textit{en otro caso}\end{cases}
+\end{equation}
+$n$ corresponde al tamaño de la muestra mientras que $N$ corresponde al tamaño del universo.
+
+<br>
+
+<span style="color:#FF8D21"> **Tu turno**: Construya el marco y el espacio muestral basado en el gasto de $N=10$ personas con muestras de $n=3$ elementos </span>
+
+```{r}
+library(countdown)
+countdown(minutes = 4, seconds = 00,  right = 0)
+```
+
+## Muestreo Aleatorio Simple: $MAS(N, n)$
+
+```{webr-r}
+#| echo: true
+library(tidyverse)
+marco <- tribble(
+  ~consec,    ~nombre,    ~gasto,
+         1,     "Pedro",       100,
+         2,      "Paco",       200,
+         3,     "María",       300,
+         4,      "Luís",       500
+)
+
+N <- nrow(marco)
+n <- 3
+
+omega <- combn(1:N, n) |> t()
+```
+
+
+## Algoritmos de selección para un MAS
+
+**Coordinado Negativo**
+
+1. Generar $N$ realizaciones de una variable aleatoria $\xi_k$ ($k\in U$) con distribución uniforme (0,1).
+2. Asignar $\xi_k$ al elemento $k$-ésimo de la población.
+3. Ordenar la lista de elementos descendente (o ascendentemente) con respecto a este número aleatorio $\xi_k$.
+4. Seleccionar los $n$ primeros (o los $n$ últimos) elementos. 
+
+. . . 
+
+<span style="color:#FF8D21"> **Tu turno**: Seleccione una muestra aleatoria simple de tamaño $n=3$ elementos del universo de $N=10$ usando el algoritmo coordinado negativo </span>
+
+```{r}
+library(countdown)
+countdown(minutes = 3, seconds = 00,  right = 0)
+```
+
+
+## Algoritmos de selección para un MAS
+
+**Fan-Muller-Rezucha (1962)**
+
+1. Realizar $\xi_k\sim U(0,1)$
+2. Calcular
+$$c_k=\dfrac{n-n_k}{N-k+1}$$
+donde $n_k$ es la cantidad de objetos seleccionados en los $k-1$ ensayos anteriores.
+3. Si $\xi_k<c_k$, entonces el elemento $k$ pertenece a la muestra.
+4. Detener el proceso cuando $n=n_k$.
+
+
+## Algoritmos de selección para un MAS
+
+<br> <br>
+
+<span style="color:#FF8D21"> **Tu turno**:</span> Seleccione una muestra aleatoria simple de tamaño $n=3$ elementos del universo de $N=10$
+
+<br>
+
+1. Use el método de Fan-Muller. Explore la función `?TeachingSampling::S.SI()` 
+2. Use la función `sample(x, size)` 
+
+
+## Muestreo Bernoulli. $Ber(N, \pi)$
+
+<br>
+
+$$p(s_i)=\underbrace{\pi\cdot\pi\cdots\pi}_{n_s \text{ veces}}\underbrace{(1-\pi)(1-\pi)\cdots(1-\pi)}_{N-n_s \text{ veces}}$$
+
+. . . 
+
+
+$$p(s_i)=\begin{cases} \pi^{n_s}(1-\pi)^{N-n_s} \forall s \textit{con } n_s \textit{ elementos sin reposición} \\
+\hspace{0.2cm} 0 \hspace{0.7cm} \textit{en otro caso}\end{cases}$$
+
+. . .
+
+$\pi$ se fija a priori por experiencia y es igual para todos los elementos de $U$, nótese que $n_s$ es un tamaño de muestra aleatorio que puede incluir a todos o a ningún elemento en la muestra.
+
+## Mecanismo de selección
+
+<br><br>
+
+- Fijar el valor de $\pi$ tal que $0<\pi<1$.
+- Asignar $\xi_k \sim U(0,1)$ para todos los elementos de $U$.
+- El elemento $k$ pertenece a la muestra si $\xi_k < \pi$. Así la probabilidad de que el $k$-ésimo elemento pertenezca a la muestra es igual a $\pi$.
+
+. . . 
+
+Revisión de equipajes en aeropuertos.
+
+## Muestreo Sistemático. $SIS(N, n, r)$
+
+<div style="text-align: justify;">
+
+Cuando no se dispone de un marco de muestreo de manera explícita pero se sabe que la población está ordenada por un rótulo en particular. Por ejemplo, los hogares dentro de una manzana están ordenados por su dirección o número de apartamento.
+
+</div>
+
+. . . 
+
+<br>
+
+$p(s_i)=\begin{cases} \frac{1}{\binom{a}{r}} \hspace{0.5cm} s= \{a_j, a_k\}, r=2 \\
+\hspace{0.2cm} 0 \hspace{0.7cm} \textit{en otro caso}\end{cases}$
+
+<br>
+
+$N=an+r$, el tamaño de muestra se define como la parte entera del cociente $N/a$.
+
+
+## Mecanismo de selección
+
+<br><br>
+
+- Seleccionar con probabilidad $\frac{1}{a}$ un arranque aleatorio. Es decir, un valor $q$ tal que $1\leq q \leq a$.
+- La muestra estará definida por el siguiente conjunto:
+$$s_q=\left\{k: k=q+(j-1)a; j=1, \ldots, n_s\right\}$$
+
