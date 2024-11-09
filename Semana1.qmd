@@ -894,3 +894,207 @@ $N=an+r$, el tamaño de muestra se define como la parte entera del cociente $N/a
 - La muestra estará definida por el siguiente conjunto:
 $$s_q=\left\{k: k=q+(j-1)a; j=1, \ldots, n_s\right\}$$
 
+## Probabilidades de Inclusión
+
+<br>
+
+Se define probabilidad de inclusión de primer orden del elemento $k$
+
+$$\pi_k=\sum_{k \in s_i}p(s_i)$$
+
+. . . 
+
+Sea:
+
+$$I_k=\begin{cases}1 \hspace{0.3cm} \text{si $k \in s$} \\
+0 \hspace{0.3cm} \text{en otro caso}\end{cases}$$
+
+. . . 
+
+Entonces $\pi_k=P(I_k=1)$
+
+<span style="color:#FF8D21"> ejemplo MAS </span>
+
+## Probabilidades de Inclusión
+
+<br>
+
+Se define probabilidad de inclusión de segundo orden de los elementos $k$ y $l$
+
+$$\pi_{kl}=\sum_{k,l \in s_i}p(s_i)$$
+
+. . . 
+
+Entonces $\pi_{k,l}=P(I_kI_l=1)$
+
+## Probabilidades de Inclusión
+
+<br><br>
+
+- $\pi_{kk}=\pi_k.$
+- Por definición de muestra probabilística $\pi_k>0$.
+- En muestreo de elementos $\pi_k$ para todo $k=1,\ldots,N$  son conocidos de antemano.
+
+
+## Estadística y Estimador
+
+Sea $\widehat{\theta}$ una estadística o estimador entonces bajo el diseño muestral $p(\cdot)$ se define:
+
+- Valor esperado: $E_P(\widehat{\theta})=\sum_Sp(s_i)\widehat{\theta}$
+- Sesgo: $B(\widehat{\theta})=E_P(\widehat{\theta})-\theta$
+- Varianza: $V_P(\widehat{\theta})=\sum_Sp(s_i)\left[\widehat{\theta}-E(\widehat{\theta})\right]^2$
+- Error Cuadrático Medio: $ECM(\widehat{\theta})=V(\widehat{\theta})+B^2(\widehat{\theta})$
+
+## Estadística y Estimador
+
+Sea $\widehat{\theta}$ una estadística o estimador entonces bajo el diseño muestral $p(\cdot)$ se define:
+
+- Error estándar: $\sqrt{V_P(\widehat{\theta})}$
+- Coeficiente de variación (error relativo): $\frac{\sqrt{V_P(\widehat{\theta})}}{E_P(\widehat{\theta})}$
+- Coeficiente de variación estimado: $cve(\%)=100*\frac{\sqrt{\widehat{V}_P(\widehat{\theta})}}{\widehat{\theta}}$
+
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+E(I_k)&=\sum_Sp(s_i)I_k(s_i) \\
+&=\sum_{k \in s_i}p(s_i) \\
+&=\pi_k
+\end{align*}
+
+. . . 
+
+- ejemplo MAS
+- ejemplo BER
+
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+V(I_k)&=\sum_Sp(s_i)\left[I_k(s_i)-E(I_k(s_i))\right]^2 \\
+&=\sum_Sp(s_i)I^2_k(s_i)-2\sum_Sp(s_i)I_k(s_i)\pi_k+\sum_Sp(s_i)\pi^2_k \\
+&=\pi_k-2\pi_k^2+\pi_k^2 \\
+&=\pi_k(1-\pi_k)
+\end{align*}
+
+. . . 
+
+- ejemplo MAS
+- ejemplo BER
+
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+Cov(I_k, I_l)&=\sum_Sp(s_i)\left(I_k(s_i)-\pi_k\right)\left(I_l(s_i)-\pi_l\right) \\
+&=\sum_Sp(s_i)I_k(s_i)I_l(s_i)-\pi_l\sum_Sp(s_i)I_k(s_i)\\
+   &\hspace{2.0cm}-\pi_k\sum_Sp(s_i)I_l(s_i)+\pi_k\pi_l\sum_Sp(s_i)\\
+&= \sum_{k,l \in s_i}p(s_i)-\pi_l\sum_{k \in s_i}p(s_i) - \pi_k\sum_{l \in s_i}p(s_i)+\pi_k\pi_l\\
+&=\pi_{kl}-\pi_k\pi_l-\pi_k\pi_l+\pi_k\pi_l \\
+&=\pi_{kl}-\pi_k\pi_l \\
+&=\Delta_{kl}
+\end{align*}
+
+. . . 
+
+- ejemplo MAS
+- ejemplo BER
+
+
+## Estadística $n_s$
+
+**Ejemplo:**
+
+\begin{align*}
+E(n_s)&=\sum_Sp(s_i)n_s\\
+&=\sum_Sp(s_i)\sum_UI_k\\
+&=\sum_U\sum_Sp(s_i)I_k\\
+&=\sum_U\sum_{k \in s_i}p(s_i)\\
+&=\sum_U\pi_k
+\end{align*}
+
+. . . 
+
+- ejemplo MAS
+- ejemplo BER
+
+
+## Parámetros de interés
+
+Para un universo $U$ de tamaño $N$, sea $y$ la característica de interés, entonces podríamos estar interesados en:
+
+- **Total**: $t_y=\sum_Uy_k$ (personas con cierta enfermedad)
+- **Media**: $\overline{y}_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ (dinero)
+- **Proporción**: $p_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ para $y_k=\{1,0\}$ (desplazados)
+- **Razón**: $R=\frac{t_y}{t_z}$. Unidades del producto por establecimiento con la intención de venderlo.
+
+. . . 
+
+Nótese que todos los parámetros pueden ser expresados como función de totales, por tanto hay un particular interés encontrar estimadores para este parámetro.
+
+## Estimador de Horvitz-Thompson (1952)
+
+Para un universo $U$ se desea estimar el total de una característica de interés $y$ denotado como $t_y$. Por ejemplo,
+
+Para $\theta=t_y=\sum_Uy_k$ se define: 
+$$\widehat{\theta}=\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}$$
+
+$\frac{1}{\pi_k}$ se denomina \textbf{\textit{Factor de expansión}}
+
+. . . 
+
+Cada elemento se representa a sí mismo y a una fracción de la población.
+
+
+## Estimador de Horvitz-Thompson (1952) - Propiedades
+
+**Resultado**
+
+- $E(\widehat{t}_{y,\pi})=t_y$ <span style="color:#FF8D21">demost.</span> 
+- $V(\widehat{t}_{y,\pi})=\sum\sum_U\Delta_{kl}\frac{y_k}{\pi_k}\frac{y_l}{\pi_l}$ 
+- $\widehat{V}(\widehat{t}_{y,\pi})={\Large\sum\sum_{s_i}\frac{\Delta_{kl}}{\pi_{kl}}\frac{y_k}{\pi_k}\frac{y_l}{\pi_l}}$
+
+. . . 
+
+$\Delta_{kl}=\pi_{kl}-\pi_k\pi_l$, además $E(\widehat{V}(\widehat{t}_{y,\pi}))=V(\widehat{t}_{y,\pi})$
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Aleatorio Simple**
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\frac{N}{n}\sum_{s_i}y_k$
+- $V_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Bernoulli**
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\sum_{s_i}\frac{y_k}{\pi}$
+- $V_{Ber}(\widehat{t}_{y,\pi})=\left(\frac{1}{\pi}-1\right)\sum_Uy^2_k$
+- $\widehat{V}_{Ber}(\widehat{t}_{y,\pi})=\frac{1}{\pi}\left(\frac{1}{\pi}-1\right)\sum_{s_i}y^2_k$
+
+. . . 
+
+<span style="color:#FF8D21">Ejercicio:</span> Para los ejercicios hechos en clase de MAS y Bernoulli calcule $\widehat{t}_{y,\pi}$ y $V_{Ber}(\widehat{t}_{y,\pi})$, este último vía definición y por el estimador dado por la expresión. Para ambas expresiones compruebe el insesgamiento del estimador.
+
+## Estimación de la media poblacional 
+
+**Muestreo Aleatorio Simple**
+
+- $\widehat{\overline{y}}_U=\frac{\widehat{t}_{y,\pi}}{N}$
+- $V_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+. . . 
+
+Al factor $\left(1-\frac{n}{N}\right)$ se le conoce como factor de corrección para poblaciones finitas.
+
+
+
