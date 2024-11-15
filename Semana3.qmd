@@ -1,0 +1,326 @@
+---
+title: "Muestreo Probabilístico"
+subtitle: "Maestría en Estadística y Ciencia de datos"
+author: "[Giovany Babativa, PhD](http://jgbabativam.rbind.io/)"
+format: 
+  gbabativa-revealjs:
+    footer: "Diapositivas disponibles en [GitHub](https://github.com/jgbabativam)."
+    logo: "images/UNIVlogo.png"
+incremental: false
+embed-resources: true
+highlight-style: dracula
+execute: 
+  echo: false
+  eval: true
+filters:
+  - webr
+revealjs-plugins:
+  - drop
+---
+
+## Sobre Mi
+
+<div style="text-align: justify;">
+
+PhD en Estadística, MSc en Big Data, MSc en Estadística.  Con 20 años de experiencia, actual director de analítica en el CNC, miembro del comité de expertos en pobreza en el DANE y consultor de la División de Estadística de la CEPAL. Ex-decano de la Facultad de Estadística USTA, ex-director de operaciones en el ICFES,...
+
+> Puedes encontrarme en:
+
+- {{< ai google-scholar >}} [Google scholar](https://scholar.google.es/citations?user=2NJRNg8AAAAJ&hl=es)
+- {{< fa brands github >}} [GitHub. https://github.com/jgbabativam](https://github.com/jgbabativam)
+- {{< fa brands linkedin >}} [linkedin](https://www.linkedin.com/in/giovany-babativa-marquez/?originalSubdomain=co)
+- {{< fa solid envelope >}} j.babativamarquez@uniandes.edu.co
+
+</div>
+
+
+
+# MUESTREO PROBABILÍSTICO {background-color="#0077b6"}
+
+## Notación
+
+<br><br>
+
+<div style="text-align: justify;">
+
+Defina a $U$ un universo^[En adelante se denominará universo a la población objetivo.] de elementos $\{U_1,\ldots,U_N\}$ **finito** y **conocido** de antemano con una variable de interés $Y$ que toma valores $\{y_1,\ldots,y_N\}$. Sea el parámetro $\theta$ (medida del universo) una función de $(y_1,\ldots,y_N)$ de esta manera a $\theta(y_1,\ldots,y_N)$ se denomina parámetro y se denota $\theta$.
+
+</div> 
+
+
+## Probabilidades de Inclusión
+
+<br>
+
+Se define probabilidad de inclusión de primer orden del elemento $k$
+
+$$\pi_k=\sum_{k \in s_i}p(s_i)$$
+
+. . . 
+
+Sea:
+
+$$I_k=\begin{cases}1 \hspace{0.3cm} \text{si $k \in s$} \\
+0 \hspace{0.3cm} \text{en otro caso}\end{cases}$$
+
+. . . 
+
+Entonces $\pi_k=P(I_k=1)$
+
+
+## Parámetros de interés
+
+Para un universo $U$ de tamaño $N$, sea $y$ la característica de interés, entonces podríamos estar interesados en:
+
+- **Total**: $t_y=\sum_Uy_k$ (personas con cierta enfermedad)
+- **Media**: $\overline{y}_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ (dinero)
+- **Proporción**: $p_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ para $y_k=\{1,0\}$ (desplazados)
+- **Razón**: $R=\frac{t_y}{t_z}$. Unidades del producto por establecimiento con la intención de venderlo.
+
+. . . 
+
+Nótese que todos los parámetros pueden ser expresados como función de totales, por tanto hay un particular interés encontrar estimadores para este parámetro.
+
+
+## Estimador de Horvitz-Thompson (1952)
+
+Para un universo $U$ se desea estimar el total de una característica de interés $y$ denotado como $t_y$. Por ejemplo,
+
+Para $\theta=t_y=\sum_Uy_k$ se define: 
+$$\widehat{\theta}=\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}$$
+
+$\frac{1}{\pi_k}$ se denomina \textbf{\textit{Factor de expansión}}
+
+. . . 
+
+Cada elemento se representa a sí mismo y a una fracción de la población.
+
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Aleatorio Simple**
+
+<br>
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\frac{N}{n}\sum_{s_i}y_k$
+- $V_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Bernoulli**
+
+<br>
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\sum_{s_i}\frac{y_k}{\pi}$
+- $V_{Ber}(\widehat{t}_{y,\pi})=\left(\frac{1}{\pi}-1\right)\sum_Uy^2_k$
+- $\widehat{V}_{Ber}(\widehat{t}_{y,\pi})=\frac{1}{\pi}\left(\frac{1}{\pi}-1\right)\sum_{s_i}y^2_k$
+
+
+## Estimación de la media poblacional 
+
+**Muestreo Aleatorio Simple**
+
+<br>
+
+- $\widehat{\overline{y}}_U=\frac{\widehat{t}_{y,\pi}}{N}$
+- $V_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+. . . 
+
+Al factor $\left(1-\frac{n}{N}\right)$ se le conoce como factor de corrección para poblaciones finitas.
+
+
+## Estimador de Hansen-Hurwitz (1943)
+
+<br><br>
+
+$$\widehat{t}_{y,MCR}=\frac{1}{m}\sum_{i=1}^m\frac{y_{k_i}}{p_{k_i}}$$
+
+En donde $p_{k_i}$ es la probabilidad de selección del elemento $k$. Cada elemento se representa así mismo y al resto del universo $\rightarrow$ promedio.
+
+
+## Estimador de Hansen-Hurwitz (1943)
+
+<br><br>
+- $V\left(\widehat{t}_{y,MCR}\right)=\frac{1}{m}\sum_Up_k\left(\frac{y_k}{p_k}-t_y\right)^2$
+
+- $\widehat{V}\left(\widehat{t}_{y,MCR}\right)=\frac{1}{m(m-1)}\sum_{i=1}^m\left(\frac{y_{k_i}}{p_{k_i}}-\widehat{t}_{y,MCR}\right)^2$ 
+
+- $E\left(\widehat{V}\left(\widehat{t}_{y,MCR}\right)\right)=V\left(\widehat{t}_{y,MCR}\right)$
+
+
+# ESTIMACIÓN {background-color="#0077b6"}
+
+ 
+## Estimación de un dominio
+
+<br><br>
+
+<div style="text-align: justify;">
+
+Con frecuencia se desean estimaciones de subpoblaciones no consideradas dentro del diseño muestral, dicha subpoblación es denominada un **dominio**, en general no sabemos cuántos elementos pertenecen a un dominio hasta obtener los resultados de la muestra. Por ejemplo, al diseñar una muestra para medir la intención de voto de los Colombianos el interés se centra en conocer el total de personas que votarán por los diferentes candidatos pero previo a los resultados no se conoce cuántos votarán por cada uno.
+
+</div> 
+
+
+## Estimación de un dominio: Notación
+
+El total de un dominio es: 
+
+$$\sum_{U_d}y_k$$
+
+con $U_d$ la población que compone al dominio.
+
+Sea $$y_{dk}=\begin{cases}y_k \hspace{0.2cm}\text{si } k\in U_d \\ 0 \hspace{0.4cm} \text{en otro caso}\end{cases}$$
+
+## Estimación de un dominio: Notación
+
+<br>
+
+Así $t_{yd}=\sum_{U}y_{dk}$ será el total de la variable de interés.
+
+. . . 
+
+<br>
+Si $y_{dk}=1$ cuando $k \in U_d$ entonces $N_d=\sum_Uy_{k_d}$ es el tamaño poblacional del dominio.
+
+. . . 
+
+<br>
+Luego la media del dominio es: $$\overline{y}_{Ud}=\frac{t_{yd}}{N_d}$$
+
+## Estimación de un dominio: Ejemplo
+
+- A nivel general el estimador de Horvitz-Thompson es:
+$$\widehat{t}_{yd}=\sum_{s}\frac{y_{dk}}{\pi_k}$$
+- Particularmente para MAS se tiene que:
+$$\widehat{t}_{yd}=\frac{N}{n}\sum_{s}y_{dk}$$
+
+$$\widehat{V}(\widehat{t}_{yd})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{y_ds}$$
+
+## Estimación de un dominio: Aplicación
+
+**Ejemplo:**  
+Suponga que por medio de un muestreo a hogares se desea determinar la estructura del gasto según los ingresos familiares. El cliente desea estimar un cuadro de salida así:
+
+```{r}
+library(kableExtra)
+
+data.frame(
+  "Gasto" = c("Vivienda", "Alimentación", "Educación", "Transporte", "Esparcimiento", "Otros", "Total"),
+  "Total < 2 SMMLV" = rep("", 7),
+  "CVE (%) < 2 SMMLV" = rep("", 7),
+  "Total 2 a 4 SMMLV" = rep("", 7),
+  "CVE (%) 2 a 4 SMMLV" = rep("", 7),
+  "Total > 4 SMMLV" = rep("", 7),
+  "CVE (%) > 4 SMMLV" = rep("", 7),
+  "Total General" = rep("", 7),
+  "CVE (%) Total" = rep("", 7)
+) %>% janitor::clean_names() |> 
+  kbl(align = "lrrrrrrrr", booktabs = TRUE, linesep = "", caption = "Total de gasto de las familias en la población según ingresos familiares.") %>%
+  kable_styling(full_width = TRUE, font_size = 16)
+
+```
+
+## Estimación de un dominio: Aplicación
+
+1. _Ejemplo Hogares - Marco Muestral.xls_ seleccione una muestra por $MAS(N, 10)$.
+2. _Dominio Hogares.xls_ estime en Excel el cuadro de salida solicitado por el cliente.
+3. _Dominio Hogares.xls_ asigne arbitrariamente los códigos de hogares seleccionados en el literal 1 y documente la base.
+4. _Dominio Hogares.xls_ suba los datos a _R_.
+5. Haga un cruce de los datos con la muestra y la base con la información levantada de tal forma que los pesos muestrales queden en el archivo _Dominio Hogares.xls_.
+6. Estime en **R** el cuadro de salida solicitado por el cliente.
+
+
+```{r}
+library(countdown)
+countdown(minutes = 35, seconds = 00,  right = 0)
+```
+
+## Estimación de un dominio: Aplicación
+
+<br>
+
+<div style="text-align: justify;">
+
+Lohr (1999) En el censo de Agricultura de Estados Unidos que se realiza cada 5 años, se reúnen datos de todas las fincas-granjas donde se producen y venden más de \$100.000 USD en productos agrícolas al mes. Dentro de las variables que se miden está el número de granjas y los acres^[Un acre es una medida de superficie usada en agricultura equivalente a 43560 $pies^2$] dedicados a las granjas. El archivo **agpop.sav** contiene los datos de la población medida en el censo de $N=3078$. El archivo **Agrsrs.sav** contiene los datos de una muestra obtenida mediante el diseño $MAS(3078, 300)$. Estime el promedio y la cantidad de acres dedicados a la agricultura en el año 1992 en los Estados Unidos.
+
+</div>
+
+## Codigo R
+
+```{r, echo=TRUE}
+library(pacman)
+p_load(tidyverse, survey, srvyr, remotes, haven)
+remotes::install_github("tidy-survey-r/srvyrexploR")
+
+library(srvyrexploR)
+
+```
+
+## Estimación de un dominio: Promedio
+
+**MAS**
+
+
+- $\overline{y}_{Ud}=\frac{t_{yd}}{N_d}=\frac{N/n\sum_{U}y_{dk}}{N_d}$
+- $\overline{y}_{sd}=\frac{\widehat{t}_{yd}}{\widehat{N}_d}=\frac{N/n\sum_{s}y_{dk}}{N/n\sum_{s}z_{dk}}=\frac{\sum_{s}y_{dk}}{n_d}$, con $z_{dk}=1$ si $k \in U_d$
+
+. . . 
+
+Puesto que la cantidad del numerador y del denominador son variables aleatorias el estimador se denomina de razón y la estimación de la varianza se obtiene por aproximación mediante el método de linealización de Taylor.
+
+
+# MUESTREO ESTRATIFICADO {background-color="#0077b6"}
+
+## Definiciones
+
+1. $U=\{1,2,\ldots,N\}$ sea $\{U_1, U_2, \ldots, U_H\}$ una partición de $U$.
+2. $U_h, h=1,\ldots,H$ se aplica de forma **INDEPENDIENTE** el diseño muestral $P_h(\cdot)$.
+3. $t_y=\sum_Uy_k=\sum_{h=1}^Ht_{yh}$ de tal manera que el estimador insesgado de $t_y$ es:
+
+\begin{align*}
+\widehat{t}_y=\sum_{h=1}^H\widehat{t}_{yh}
+\end{align*}
+
+\begin{align*}
+\widehat{V}\left(\widehat{t}_y\right)=\widehat{V}\left(\sum_{h=1}^H\widehat{t}_{yh}\right)=\sum_{h=1}^H\widehat{V}\left(\widehat{t}_{yh}\right)
+\end{align*}
+
+## Observaciones
+
+1. Cada estrato $U_h$ es de tamaño $N_h$, así $\sum_{h=1}^HN_h=N$.
+2. Una partición de $U$ es:
+ - $N_h\neq0, h=1,\ldots,H.$
+ - $U_i \bigcap U_j=\emptyset, i\neq j; i,j=1,\ldots,H$
+ - $\bigcup_{h=1}^HU_h=U$
+ 
+3. **Estrato es diferente de dominio**, los estratos se construyen a partir del diseño de la muestra, los dominios no. Por tanto la manera de hacer estimación es diferente.
+
+
+```{r}
+#pagedown::chrome_print("path-to-file.html")
+```
+
+# GRACIAS! {background-color="#ddf3ff"}
+
+# Referencias
+
+- Gutiérrez, H. A. (2016). Estrategias de muestreo: Diseño de encuestas y estimación de parámetros. Ediciones de la U.
+
+- Lohr, S. L. (2021). Sampling: design and analysis. Chapman and Hall/CRC.
+
+- Särndal, C. E., Swensson, B., & Wretman, J. (2003). Model assisted survey sampling. Springer Science & Business Media.
+
+- Valliant, R., Dever, J. A., & Kreuter, F. (2013). Practical tools for designing and weighting survey samples (Vol. 1). New York: Springer.
+
+
+# Citación y derechos de autor
+
+Este material ha sido creado por [Giovany Babativa-Márquez](https://github.com/jgbabativam) y es de libre distribución bajo la licencia [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+Si se copia parcial o totalmente, debe citar la fuente como:
+
+> Babativa-Márquez, J.G. *Diapositivas del curso de muestreo probabilístico*. URL: https://jgbabativam.github.io/Muestreo-I/Semana3.html. 2024.

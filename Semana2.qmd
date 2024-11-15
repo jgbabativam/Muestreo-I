@@ -1,0 +1,559 @@
+---
+title: "Muestreo Probabilístico"
+subtitle: "Maestría en Estadística y Ciencia de datos"
+author: "[Giovany Babativa, PhD](http://jgbabativam.rbind.io/)"
+format: 
+  gbabativa-revealjs:
+    footer: "Diapositivas disponibles en [GitHub](https://github.com/jgbabativam)."
+    logo: "images/UNIVlogo.png"
+incremental: false
+embed-resources: true
+highlight-style: dracula
+execute: 
+  echo: false
+  eval: true
+filters:
+  - webr
+revealjs-plugins:
+  - drop
+---
+
+## Sobre Mi
+
+<div style="text-align: justify;">
+
+PhD en Estadística, MSc en Big Data, MSc en Estadística.  Con 20 años de experiencia, actual director de analítica en el CNC, miembro del comité de expertos en pobreza en el DANE y consultor de la División de Estadística de la CEPAL. Ex-decano de la Facultad de Estadística USTA, ex-director de operaciones en el ICFES,...
+
+> Puedes encontrarme en:
+
+- {{< ai google-scholar >}} [Google scholar](https://scholar.google.es/citations?user=2NJRNg8AAAAJ&hl=es)
+- {{< fa brands github >}} [GitHub. https://github.com/jgbabativam](https://github.com/jgbabativam)
+- {{< fa brands linkedin >}} [linkedin](https://www.linkedin.com/in/giovany-babativa-marquez/?originalSubdomain=co)
+- {{< fa solid envelope >}} j.babativamarquez@uniandes.edu.co
+
+</div>
+
+
+
+# MUESTREO PROBABILÍSTICO {background-color="#0077b6"}
+
+## Notación
+
+<br><br>
+
+<div style="text-align: justify;">
+
+Defina a $U$ un universo^[En adelante se denominará universo a la población objetivo.] de elementos $\{U_1,\ldots,U_N\}$ **finito** y **conocido** de antemano con una variable de interés $Y$ que toma valores $\{y_1,\ldots,y_N\}$. Sea el parámetro $\theta$ (medida del universo) una función de $(y_1,\ldots,y_N)$ de esta manera a $\theta(y_1,\ldots,y_N)$ se denomina parámetro y se denota $\theta$.
+
+</div> 
+
+## Conceptos básicos
+
+<br>
+
+Algunos parámetros de interés en un estudio por muestreo:
+
+- **Total**: $t_y=\sum_Uy_k$
+
+- **Promedio**: $\overline{y}_U=\frac{1}{N}\sum_Uy_k$
+
+- **Razón**: $R=\frac{\sum_Uy_k}{\sum_Uz_k}=\frac{t_y}{t_z}$
+
+
+## Probabilidades de Inclusión
+
+<br>
+
+Se define probabilidad de inclusión de primer orden del elemento $k$
+
+$$\pi_k=\sum_{k \in s_i}p(s_i)$$
+
+. . . 
+
+Sea:
+
+$$I_k=\begin{cases}1 \hspace{0.3cm} \text{si $k \in s$} \\
+0 \hspace{0.3cm} \text{en otro caso}\end{cases}$$
+
+. . . 
+
+Entonces $\pi_k=P(I_k=1)$
+
+
+## Probabilidades de Inclusión
+
+<br>
+
+Se define probabilidad de inclusión de segundo orden de los elementos $k$ y $l$
+
+$$\pi_{kl}=\sum_{k,l \in s_i}p(s_i)$$
+
+. . . 
+
+Entonces $\pi_{k,l}=P(I_kI_l=1)$
+
+## Probabilidades de Inclusión
+
+<br><br>
+
+- $\pi_{kk}=\pi_k.$
+- Por definición de muestra probabilística $\pi_k>0$.
+- En muestreo de elementos $\pi_k$ para todo $k=1,\ldots,N$  son conocidos de antemano.
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+- Use el espacio muestral del diseño MAS para calcular la probabilidad de inclusión del elemento 1, verifique que $\pi_k = \frac{n}{N}$.
+
+- Use el espacio muestral del diseño BER para calcular la probabilidad de inclusión del elemento 1, verifique que $\pi_k = \pi$.
+
+
+```{r}
+library(countdown)
+countdown(minutes = 10, seconds = 00,  right = 0)
+```
+
+## Estadística y Estimador
+
+Sea $\widehat{\theta}$ una estadística o estimador entonces bajo el diseño muestral $p(\cdot)$ se define:
+
+- Valor esperado: $E_P(\widehat{\theta})=\sum_Sp(s_i)\widehat{\theta}$
+- Sesgo: $B(\widehat{\theta})=E_P(\widehat{\theta})-\theta$
+- Varianza: $V_P(\widehat{\theta})=\sum_Sp(s_i)\left[\widehat{\theta}-E(\widehat{\theta})\right]^2$
+- Error Cuadrático Medio: $ECM(\widehat{\theta})=V(\widehat{\theta})+B^2(\widehat{\theta})$
+
+## Estadística y Estimador
+
+Sea $\widehat{\theta}$ una estadística o estimador entonces bajo el diseño muestral $p(\cdot)$ se define:
+
+- Error estándar: $\sqrt{V_P(\widehat{\theta})}$
+- Coeficiente de variación (error relativo): $\frac{\sqrt{V_P(\widehat{\theta})}}{E_P(\widehat{\theta})}$
+- Coeficiente de variación estimado: $cve(\%)=100*\frac{\sqrt{\widehat{V}_P(\widehat{\theta})}}{\widehat{\theta}}$
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+Calcule $E_P(\widehat{\theta})=\sum_Sp(s_i)\widehat{\theta}$ para:
+
+$$\widehat{\theta} = \frac{1}{n} \sum_s y_k$$
+             
+
+Use el espacio muestral de un MAS
+
+```{r}
+library(countdown)
+countdown(minutes = 10, seconds = 00,  right = 0)
+```
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+E(I_k)&=\sum_Sp(s_i)I_k(s_i) \\
+&=\sum_{k \in s_i}p(s_i) \\
+&=\pi_k
+\end{align*}
+
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+V(I_k)&=\sum_Sp(s_i)\left[I_k(s_i)-E(I_k(s_i))\right]^2 \\
+&=\sum_Sp(s_i)I^2_k(s_i)-2\sum_Sp(s_i)I_k(s_i)\pi_k+\sum_Sp(s_i)\pi^2_k \\
+&=\pi_k-2\pi_k^2+\pi_k^2 \\
+&=\pi_k(1-\pi_k)
+\end{align*}
+
+. . . 
+
+- ejemplo MAS
+- ejemplo BER
+
+
+## Estadística $I_k$
+
+**Ejemplo:**
+
+\begin{align*}
+Cov(I_k, I_l)&=\sum_Sp(s_i)\left(I_k(s_i)-\pi_k\right)\left(I_l(s_i)-\pi_l\right) \\
+&=\sum_Sp(s_i)I_k(s_i)I_l(s_i)-\pi_l\sum_Sp(s_i)I_k(s_i)\\
+   &\hspace{2.0cm}-\pi_k\sum_Sp(s_i)I_l(s_i)+\pi_k\pi_l\sum_Sp(s_i)\\
+&= \sum_{k,l \in s_i}p(s_i)-\pi_l\sum_{k \in s_i}p(s_i) - \pi_k\sum_{l \in s_i}p(s_i)+\pi_k\pi_l\\
+&=\pi_{kl}-\pi_k\pi_l-\pi_k\pi_l+\pi_k\pi_l \\
+&=\pi_{kl}-\pi_k\pi_l \\
+&=\Delta_{kl}
+\end{align*}
+
+
+## Estadística $n_s$
+
+**Ejemplo:**
+
+\begin{align*}
+E(n_s)&=\sum_Sp(s_i)n_s\\
+&=\sum_Sp(s_i)\sum_UI_k\\
+&=\sum_U\sum_Sp(s_i)I_k\\
+&=\sum_U\sum_{k \in s_i}p(s_i)\\
+&=\sum_U\pi_k
+\end{align*}
+
+. . . 
+
+- ejemplo MAS y BER
+
+
+## Parámetros de interés
+
+Para un universo $U$ de tamaño $N$, sea $y$ la característica de interés, entonces podríamos estar interesados en:
+
+- **Total**: $t_y=\sum_Uy_k$ (personas con cierta enfermedad)
+- **Media**: $\overline{y}_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ (dinero)
+- **Proporción**: $p_U=\frac{\sum_Uy_k}{N}=\frac{t_y}{N}$ para $y_k=\{1,0\}$ (desplazados)
+- **Razón**: $R=\frac{t_y}{t_z}$. Unidades del producto por establecimiento con la intención de venderlo.
+
+. . . 
+
+Nótese que todos los parámetros pueden ser expresados como función de totales, por tanto hay un particular interés encontrar estimadores para este parámetro.
+
+
+## Estimador de Horvitz-Thompson (1952)
+
+Para un universo $U$ se desea estimar el total de una característica de interés $y$ denotado como $t_y$. Por ejemplo,
+
+Para $\theta=t_y=\sum_Uy_k$ se define: 
+$$\widehat{\theta}=\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}$$
+
+$\frac{1}{\pi_k}$ se denomina \textbf{\textit{Factor de expansión}}
+
+. . . 
+
+Cada elemento se representa a sí mismo y a una fracción de la población.
+
+
+## Estimador de Horvitz-Thompson (1952) - Propiedades
+
+**Resultado**
+
+- $E(\widehat{t}_{y,\pi})=t_y$ <span style="color:#FF8D21">demost.</span> 
+- $V(\widehat{t}_{y,\pi})=\sum\sum_U\Delta_{kl}\frac{y_k}{\pi_k}\frac{y_l}{\pi_l}$ 
+- $\widehat{V}(\widehat{t}_{y,\pi})={\Large\sum\sum_{s_i}\frac{\Delta_{kl}}{\pi_{kl}}\frac{y_k}{\pi_k}\frac{y_l}{\pi_l}}$
+
+. . . 
+
+$\Delta_{kl}=\pi_{kl}-\pi_k\pi_l$, además $E(\widehat{V}(\widehat{t}_{y,\pi}))=V(\widehat{t}_{y,\pi})$
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Aleatorio Simple**
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\frac{N}{n}\sum_{s_i}y_k$
+- $V_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{t}_{y,\pi})=\frac{N^2}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+## Estimador de Horvitz-Thompson (1952) 
+
+**Muestreo Bernoulli**
+
+- $\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\sum_{s_i}\frac{y_k}{\pi}$
+- $V_{Ber}(\widehat{t}_{y,\pi})=\left(\frac{1}{\pi}-1\right)\sum_Uy^2_k$
+- $\widehat{V}_{Ber}(\widehat{t}_{y,\pi})=\frac{1}{\pi}\left(\frac{1}{\pi}-1\right)\sum_{s_i}y^2_k$
+
+. . . 
+
+<span style="color:#FF8D21">Ejercicio:</span> Para los ejercicios hechos en clase de MAS y Bernoulli calcule $\widehat{t}_{y,\pi}$ y $V_{Ber}(\widehat{t}_{y,\pi})$, este último vía definición y por el estimador dado por la expresión. Para ambas expresiones compruebe el insesgamiento del estimador.
+
+## Estimación de la media poblacional 
+
+**Muestreo Aleatorio Simple**
+
+- $\widehat{\overline{y}}_U=\frac{\widehat{t}_{y,\pi}}{N}$
+- $V_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{yU}$
+- $\widehat{V}_{MAS}(\widehat{\overline{y}}_U)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{ys_i}$
+
+. . . 
+
+Al factor $\left(1-\frac{n}{N}\right)$ se le conoce como factor de corrección para poblaciones finitas.
+
+# DISEÑOS CON INFORMACIÓN AUXILIAR {background-color="#0077b6"}
+
+
+## Muestreo Proporcional al Tamaño $PPT(p_k,m)$
+
+Se realizan $m$ eventos aleatorios con probabilidad contante $1/N$, es decir se selecciona uno de los $N$ elementos, se realiza su medición $y_{k_1}$, se repone en el universo y se selecciona de nuevo uno de los $N$ elementos con medición $y_{k_2}$ y así sucesivamente hasta completar $m$ elementos. Sea:
+
+- $Z$: _Número de veces que el elemento_ $k$ _aparece en la muestra_
+- $Z=0,1, \ldots, m$
+- $Z\sim Bin(m, 1/N)$
+- $P(Z=r)=\binom{m}{r}(1/N)^r(1-1/N)^{m-r}$
+- $P(Z=0)=(1-1/N)^m$
+- $\pi_k=P(Z\geq 1)=1-P(Z=0)=1-(1-\frac{1}{N})^m$
+
+
+## Muestreo Proporcional al Tamaño $PPT(p_k,m)$
+
+
+<br><br>
+
+<div style="text-align: justify;">
+
+Una generalización conduce al diseño de Probabilidad Proporcional al Tamaño (PPT) cuando cada elemento se selecciona con probabilidad $p_k$, tal que $\sum_Up_k=1$. Para este diseño se debe contar con información auxiliar disponible para todos los elementos de $U$, este diseño tienes varios beneficios entre los que se encuentra que reduce costos y que su uso es relativamente simple.
+
+</div> 
+
+
+## Algoritmo de Selección: Acumulativo Total
+
+**Ejemplo**
+
+Suponga que $U=9$, para un estudio de mercados se desea seleccionar una muestra de $4$ tiendas, pero basado en la información auxiliar se desea darle más peso a las tiendas que tienen una mayor rotación del producto. La información auxiliar para las 9 tiendas es:
+
+<br>
+
+```{r}
+library(knitr)
+
+data <- data.frame(
+  Tienda = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
+  Ventas_Unid = c(32, 96, 65, 140, 22, 78, 65, 47, 106)
+)
+
+
+knitr::kable(data |> t(),  format = "simple")
+```
+
+
+## $\pi$-Estimador
+
+<br>
+
+La muestra ordenada es de tamaño $m$ mientras que la muestra no ordenada (sin repetición) es de tamaño $n$.
+
+$$\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}=\sum_{s_i}\frac{y_k}{1-(1-p_k)^m}$$
+
+El estimador cuenta con $n$ sumandos, es decir, que los elementos repetidos solo cuentan una vez dentro del estimador.
+
+## Estimador de Hansen-Hurwitz (1943)
+
+<br><br>
+
+$$\widehat{t}_{y,MCR}=\frac{1}{m}\sum_{i=1}^m\frac{y_{k_i}}{p_{k_i}}$$
+
+En donde $p_{k_i}$ es la probabilidad de selección del elemento $k$. Cada elemento se representa así mismo y al resto del universo $\rightarrow$ promedio.
+
+
+## Estimador de Hansen-Hurwitz (1943)
+
+\begin{align*}
+E\left(\widehat{t}_{y,MCR}\right)&=E\left(\frac{1}{m}\sum_{i=1}^m\frac{y_{k_i}}{p_{k_i}}\right) \\
+& = \frac{1}{m}E\left(\sum_U\frac{y_{k}}{p_{k}}Z_k\right)  \\
+& = \frac{1}{m}\sum_U\frac{y_{k}}{p_{k}}E\left(Z_k\right)  \\
+& = \frac{1}{m}\sum_U\frac{y_{k}}{p_{k}}m{p_k}  \\
+& = \sum_U y_k = t_y
+\end{align*}
+
+
+
+## Estimador de Hansen-Hurwitz (1943)
+
+<br><br>
+- $V\left(\widehat{t}_{y,MCR}\right)=\frac{1}{m}\sum_Up_k\left(\frac{y_k}{p_k}-t_y\right)^2$
+
+- $\widehat{V}\left(\widehat{t}_{y,MCR}\right)=\frac{1}{m(m-1)}\sum_{i=1}^m\left(\frac{y_{k_i}}{p_{k_i}}-\widehat{t}_{y,MCR}\right)^2$ 
+
+- $E\left(\widehat{V}\left(\widehat{t}_{y,MCR}\right)\right)=V\left(\widehat{t}_{y,MCR}\right)$
+
+## Ejemplo: 
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+Para el estudio de mercados suponga que $s_o=\{4; 7; 7; 9\}$; $p_k=\{0.215; 0.1; 0.1; 0.163\}$ y que los valores de las ventas semanales recolectados los establecimientos seleccionados fueron $y_k=\{12; 10; 10; 11\}$
+
+
+- Usando el $\pi-$estimador, estime el total de ventas semanales (demanda) del producto en las nueve tiendas.
+- Usando el $MCR-$estimador, estime el total de ventas semanales (demanda) del producto en las nueve tiendas y calcule el $cve$.
+
+```{r}
+library(countdown)
+countdown(minutes = 10, seconds = 00,  right = 0)
+```
+
+## Muestreo $PPT(p_k,m)$: Notas
+
+<br>
+- Es fácil comprobar que $V\left(\widehat{t}_{y,MCR}\right)$ si $y_k=cp_k$, $c$ constante. Es decir, si $y_k$ es exactamente proporcional a $p_k$. 
+
+<br>
+
+<span style="color:#FF8D21"> En la práctica eso es imposible !!!... primero es la probabilidad y luego la medición. </span>
+
+
+## Muestreo $PPT(p_k,m)$: Notas
+
+<br>
+- En la práctica, sea $x_k$ una variable auxiliar altamente correlacionada con $y_k$ así $y_k/x_k\doteq c$ entonces se puede determinar
+$$p_k=\frac{x_k}{\sum_Ux_k}=\frac{x_k}{t_x}, k=1,\ldots,N$$
+
+<br>
+
+<span style="color:#FF8D21"> Entre más esté correlacionado $x_k$ con $y_k$ entonces 
+$V\left(\widehat{t}_{y,MCR}\right)\rightarrow 0$ </span> 
+
+
+## Muestreo $PPT(p_k,m)$: Notas
+
+<br><br>
+
+- Si los $p_k$ no varían casi, me voy con $MAS$ pero si varían mucho me voy con $PPT$.
+
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+Suponga que se tiene $U=\{1,2,3,4,5\}$ y que se conocen todos los valores de la variable de interés, que están dados por:
+
+```{r}
+data <- data.frame(
+  Y = c(79, 76, 54, 39, 12),
+  pk = c(0.1, 0.15, 0.2, 0.25, 0.3)
+) |> t()
+
+
+knitr::kable(data, format = "simple")
+```
+
+
+Para un muestreo con reemplazamiento con $m=3$, si los valores aleatorios son $\zeta_k = (0.05, 058, 0.36)$, determine la muestra, calcule la estimación y el cve usando el $MCR$-estimador. ¿Qué tendría que hacer para determinar si es mejor la estrategia usando $\pi$-estimador o $MCR$-estimador?
+
+
+```{r}
+library(countdown)
+countdown(minutes = 12, seconds = 00,  right = 0)
+```
+
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+<br><br><br>
+
+
+Resuelva los ejercicios: 3.1.1, 3.3, 3.4, 3.12, 3.14, 3.15 y 3.19 del libro de Gutiérrez, H.A. (2016)
+
+
+# CONFIABILIDAD {background-color="#0077b6"}
+
+
+## Confiabilidad
+
+<br><br>
+
+Sea $S$ el conjunto de todas las muestras posibles $s_1,\ldots,s_Q$; para el diseño $P(s_1), \ldots, P(s_Q)$ $\left[\sum_{s_i \in S}p(s_i)=1\right]$; el parámetro $\theta$ $\left[\theta:U\rightarrow \mathbb{R}\right]$ y el estimador $\widehat{\theta}(s_i)$.
+
+
+## Confiabilidad
+
+Para cada muestra se construye el intervalo $\left(LI(s_i), LS(s_i)\right)$ de tal manera que cada muestra tiene su propio intervalo y la longitud del intervalo puede variar dependiendo de la muestra. 
+
+. . . 
+
+
+Se define **confiabilidad** como la suma de las probabilidades de las muestras de las muestras cuyo intervalo de confianza cubre al parámetro:
+
+$$\sum_{\theta \in \left(LI(s_i), LS(s_i)\right)}P(s_i)$$
+
+Cuando se habla de confiabilidad se habla de la confiabilidad del intervalo NO de la muestra.
+
+##  Propuesta de intervalos
+
+
+- $\widehat{\theta}\pm z_{1-\alpha/2}\sqrt{V(\widehat{\theta})}$, por TLC se tiene que:
+
+$P\left(\theta \in \widehat{\theta}\pm z_{1-\alpha/2}\sqrt{V(\widehat{\theta})}\right)=1-\alpha,$  si $E(\widehat{\theta})=\theta$.
+
+. . . 
+
+Este intervalo presenta dos inconvenientes:
+
+- Condición de estimador insesgado
+- Se necesita la varianza del estimador y esa sólo se conoce en la teoría porque en la práctica solo se conoce cuando es censo y en ese caso no tiene mucho interés.
+
+
+## Propuesta de Intervalos
+
+- $\widehat{\theta}\pm z_{1-\alpha/2}\sqrt{\widehat{V}(\widehat{\theta})}$ 
+
+. . . 
+
+Este intervalo presenta la cualidad de que en la práctica puede calcularse, lo que interesa es entonces es ¿Qué confiabilidad tiene?. 
+
+. . . 
+
+Puesto que los estimadores vistos son insesgados tanto para el parámetro de interés como para la varianza se espera que para $z_{1-\alpha/2}=1.96$ en un $95\%$ de las muestras el intervalo contenga el parámetro. Pero lo anterior no me garantiza que el parámetro esté en el intervalo de la muestra seleccionada.
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+<br><br>
+
+Calcule la confiabilidad para los dos tipos de intervalo usando los datos del gasto recogidos en clase. Hágalo para el caso MAS, de tarea en casa resuelva el diseño BER.
+
+```{r}
+library(countdown)
+countdown(minutes = 20, seconds = 00,  right = 0)
+```
+
+## Sesgo Relativo
+
+<div style="text-align: justify;">
+
+La confiabilidad es una medida que se ve directamente afectada por el sesgo^[medibles y no medibles] NO por el margen de error. Es decir, si $E(\widehat{\theta})\neq \theta$ la cobertura del intervalo decrece y por más de que $z_{1-\alpha/2}=1.96$ la cobertura puede ser muy baja.
+
+$$B_r(\widehat{\theta})=\frac{B(\widehat{\theta})}{\sqrt{V(\widehat{\theta})}}=\frac{E(\widehat{\theta})-\theta}{\sqrt{V(\widehat{\theta})}}$$
+
+</div> 
+
+## Sesgo Relativo
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+<div style="text-align: justify;">
+
+Para el ejercicio de clase INCLUYA sesgos de $0; 0.05; 0.1; 0.3; 0.5; 1; 1.5; 2$ y usando un nivel de confianza del $95\%$ calcule y grafique la confiabilidad real. Use: 
+
+$$E(\widehat{\theta})-\theta=B_r(\widehat{\theta})\sqrt{V(\widehat{\theta})}$$
+
+</div> 
+
+```{r}
+library(countdown)
+countdown(minutes = 10, seconds = 00,  right = 0)
+```
+
+# GRACIAS! {background-color="#ddf3ff"}
+
+# Referencias
+
+- Gutiérrez, H. A. (2016). Estrategias de muestreo: Diseño de encuestas y estimación de parámetros. Ediciones de la U.
+
+- Lohr, S. L. (2021). Sampling: design and analysis. Chapman and Hall/CRC.
+
+- Särndal, C. E., Swensson, B., & Wretman, J. (2003). Model assisted survey sampling. Springer Science & Business Media.
+
+- Valliant, R., Dever, J. A., & Kreuter, F. (2013). Practical tools for designing and weighting survey samples (Vol. 1). New York: Springer.
+
+
+# Citación y derechos de autor
+
+Este material ha sido creado por [Giovany Babativa-Márquez](https://github.com/jgbabativam) y es de libre distribución bajo la licencia [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+Si se copia parcial o totalmente, debe citar la fuente como:
+
+> Babativa-Márquez, J.G. *Diapositivas del curso de muestreo probabilístico*. URL: https://jgbabativam.github.io/Muestreo-I/Semana2.html. 2024.
