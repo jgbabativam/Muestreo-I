@@ -241,7 +241,7 @@ countdown(minutes = 35, seconds = 00,  right = 0)
 
 ## Estimación de un dominio: Aplicación
 
-<br>
+<span style="color:#FF8D21"> Tu turno </span>
 
 <div style="text-align: justify;">
 
@@ -251,14 +251,52 @@ Lohr (1999) En el censo de Agricultura de Estados Unidos que se realiza cada 5 a
 
 ## Codigo R
 
+Cargue de los datos
+
 ```{r, echo=TRUE}
+#remotes::install_github("tidy-survey-r/srvyrexploR")
 library(pacman)
-p_load(tidyverse, survey, srvyr, remotes, haven)
-remotes::install_github("tidy-survey-r/srvyrexploR")
+p_load(tidyverse, survey, srvyr, remotes, haven, srvyrexploR, skimr)
 
-library(srvyrexploR)
+censo <- "https://github.com/jgbabativam/Muestreo-I/raw/main/datos/agpop.sav"
+encuesta <- "https://github.com/jgbabativam/Muestreo-I/raw/main/datos/Agrsrs.sav"
 
+marco <- read_sav(censo)
+datos <- read_sav(encuesta)
 ```
+
+Explore los datos usando `skim()` y `glimpse()`
+
+## Codigo R: Objeto de diseño
+
+<br><br>
+```{r, echo=TRUE}
+
+datos$FEXP <- nrow(marco)/nrow(datos)
+
+dsg <- datos |> 
+       as_survey_design(ids = 1,
+                        weights = FEXP,
+                        nest = T)
+```
+
+## Codigo R: Estimación
+
+<br><br>
+
+```{r, echo=TRUE}
+
+(estimacion <- dsg |> 
+                 summarise(Total = survey_total(acres92, vartype = c("se", "cv", "ci")),
+                           Promedio = survey_mean(acres92, vartype = c("se", "cv", "ci"))))
+
+ty <- sum(marco$acres92)
+ybU <- mean(marco$acres92)
+```
+
+. . . 
+
+¿Cómo estimaría el la proporción de condados con menos de 200.000 acres de granjas?. ¿A partir de los universos del marco, cree que esta fue una buena muestra?
 
 ## Estimación de un dominio: Promedio
 
@@ -272,6 +310,18 @@ library(srvyrexploR)
 
 Puesto que la cantidad del numerador y del denominador son variables aleatorias el estimador se denomina de razón y la estimación de la varianza se obtiene por aproximación mediante el método de linealización de Taylor.
 
+## Estimación de un dominio: Promedio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+<br><br>
+
+Para cada región estime el promedio y el total de acres por condado en 1992. 
+
+```{r}
+library(countdown)
+countdown(minutes = 5, seconds = 00,  right = 0)
+```
 
 # MUESTREO ESTRATIFICADO {background-color="#0077b6"}
 
@@ -299,6 +349,99 @@ Puesto que la cantidad del numerador y del denominador son variables aleatorias 
  
 3. **Estrato es diferente de dominio**, los estratos se construyen a partir del diseño de la muestra, los dominios no. Por tanto la manera de hacer estimación es diferente.
 
+## Razones para estratificar
+
+<div style="text-align: justify;">
+
+1. Minimizar varianza. Por ejemplo, el DANE en las encuestas económicas estratifica por empresas grandes, medianas y pequeñas.
+2. Necesidad de contar con información con alta precisión para algunos niveles de desagregación. Por ejemplo, en un estudio en Bogotá se desean estimaciones por localidad pero de no controlarse la muestra es posible que salgan muy pocos elementos para algunas localidades. 
+3. Reducción de costos. Por ejemplo, los gastos de desplazamiento pueden llegar a aumentar de manera considerable los costos de un proyecto entonces es posible estratificar por ciudades grandes, intermedias y pequeñas.
+
+</div>
+
+## Problemas técnicos de estratificar
+
+<div style="text-align: justify;">
+
+1. La cantidad de estratos es inversamente proporcional a la varianza y proporcional a los costos. En general al llegar a determinado número de estratos no se gana mucho en disminuir varianza y por el contrario se invierte mucho dinero.
+2. Delimitación de los estratos (Hidroglou, Dalenius, Análisis multivariante de clúster).
+3. Variable de estratificación - ¿con respecto a qué variable se debe estratificar?.
+4. Asignación de muestra por estratos.
+
+</div>
+
+## Muestreo ESTMAS
+
+Un caso particular es cuando se estratifica y cada uno de los estratos se aplica de manera independiente un $MAS(N_h,n_h)$. Encuesta de Anual de servicios, manufacturera y comercio (DANE).
+
+1. $\widehat{t}_{yh}=\sum_{sh}\frac{N_h}{n_h}y_k$
+2. $\widehat{t}_{y}=\sum_{h=1}^H\widehat{t}_{yh}=\sum_{h=1}^H\sum_{sh}\frac{N_h}{n_h}y_k$
+3. $\widehat{V}\left(\widehat{t}_{yh}\right)=\frac{N_h^2}{n_h}\left(1-\frac{n_h}{N_h}\right)S^2_{ysh}$
+4. $\widehat{V}\left(\widehat{t}_{y}\right)=\sum_{h=1}^H\widehat{V}\left(\widehat{t}_{yh}\right)=\sum_{h=1}^H\frac{N_h^2}{n_h}\left(1-\frac{n_h}{N_h}\right)S^2_{ysh}$ 
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+Use las bases **Agpop.sav** y **AgStrat.sav** que corresponde a una muestra usando un diseño ESTMAS y realice los siguientes ejercicios:
+
+1. Seleccione una muestra de **Agpop.sav** teniendo en cuenta los mismos $n_h$ de **AgStrat.sav**
+2. Estime el promedio de acres por región con sus respectivos errores de muestreo (hágalo sacando las medidas de resumen $N_h$, $n_h$, $S^2$).
+3. Estime en R el promedio de acres por región con sus respectivos errores de muestreo.
+
+## Ejercicio
+
+Suponga que se planea un muestreo estratificado que permita medir la intención de voto de los colombianos en las próximas elecciones presidenciales. Se ha decidido partir la población en 3 estratos. El analista Estadístico propone hacer en la primera etapa los siguientes diseños muestrales:
+
+
+- Estrato 1: Diseño de inclusión forzosa (censo).
+- Estrato 2: Diseño de Probabilidad Proporcional al Tamaño (PPT), $x_k$ es la población de 18 años o más en cada ciudad.
+- Estrato 3: Muestreo Aleatorio Simple.
+
+. . . 
+
+Determine las fórmulas necesarias para calcular el total (con su cve) de personas que votarán en las próximas elecciones. ¿Cómo estimaría la proporción de personas que están a favor del candidato $A$?.
+
+## Ejercicio
+
+Se realizó un muestreo de sedes educativas mediante un diseño ESTMAS estratificando por NSE. Con el objetivo de hacer auditoria de los recursos del estado, se investigó por la cantidad de dinero (en millones de pesos) que el estado había girado a los colegios, los resultados son:
+
+<div style="font-size: 0.6em;">
+
+ **NSE** |  $N_h$ | $n_h$ | $\sum_{s_h}y_k$ | $s^2_{yh}$ |
+|---------|-----------|-----------|---------------------|----------------|
+| 1       | 400       | 98        | 2361.8             | 5575           |
+| 2       | 30        | 10        | 256                | 4064           |
+| 3       | 61        | 37        | 9901.2             | 347556         |
+| 4       | 18        | 6         | 1074               | 22798          |
+| 5       | 70        | 39        | 11454.3            | 123578         |
+| 6       | 120       | 21        | 697.2              | 9795           |
+
+</div>
+
+Estime el total de recursos girados a los colegios de la población y por NSE, calcule intervalos de confianza al 95\% y muestre los cve.
+
+
+## Ejercicio
+
+Se desea lanzar un nuevo producto a un target específico pero se desea saber si la preferencia depende del género para tomar una decisión sobre como enfocar la publicidad. A partir de un muestreo ESTMAS se levantaron los siguientes datos:
+
+<div style="font-size: 0.6em;">
+
+**Ciudad** | $N_h$ | $n_h$ | **Mujeres (%)**  
+|----------|-------|-------|-----------------|
+| Medellín | 9100  | 636   | 38              |
+| Ibagué   | 1950  | 451   | 27              |
+| Barranquilla | 5500 | 481 | 18              |
+| Bogotá   | 10850 | 611   | 19              |
+| Cúcuta   | 2100  | 493   | 36              |
+| Bucaramanga | 5500 | 575 | 13              |
+| Cali     | 9000  | 588   | 26              |
+
+</div>
+
+Estime la proporción de mujeres de la población que preferirán el producto, calcule el cve.
+ 
 
 ```{r}
 #pagedown::chrome_print("path-to-file.html")
