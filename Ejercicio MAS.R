@@ -6,6 +6,9 @@
 # Noviembre del 2024
 
 #--------------------------------------------------
+library(pacman)
+
+p_load(tidyverse, skimr)
 
 
 marco <- tribble(
@@ -68,3 +71,20 @@ sample(marco$nombre, size = 3)
 (pi_1 <- sum(Ik$Ik*Ik$p_s))
 
 n/N == pi_1
+
+####-----
+
+estim <- Ik |> 
+         left_join(marco |> select(-aleatorio), by = c("X1" = "consec")) |> 
+         rename(e1 = nombre, y1 = gasto) |> 
+         left_join(marco |> select(-aleatorio), by = c("X2" = "consec")) |> 
+         rename(e2 = nombre, y2 = gasto) |> 
+         left_join(marco |> select(-aleatorio), by = c("X3" = "consec")) |> 
+         rename(e3 = nombre, y3 = gasto) |> 
+         select(starts_with("X"), p_s, Ik, starts_with("e"), starts_with("y")) |> 
+         rowwise() |> 
+         mutate(yb = mean(c(y1, y2, y3))) |> 
+         mutate(pt = p_s * yb)
+
+(esp <- sum(estim$pt))
+verdad
