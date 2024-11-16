@@ -228,7 +228,7 @@ Para un universo $U$ se desea estimar el total de una característica de interé
 Para $\theta=t_y=\sum_Uy_k$ se define: 
 $$\widehat{\theta}=\widehat{t}_{y,\pi}=\sum_{s_i}\frac{y_k}{\pi_k}$$
 
-$\frac{1}{\pi_k}$ se denomina \textbf{\textit{Factor de expansión}}
+$\frac{1}{\pi_k}$ se denomina **Factor de expansión**
 
 . . . 
 
