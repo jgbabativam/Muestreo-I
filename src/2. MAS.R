@@ -8,6 +8,7 @@
 
 #--------------------------------------------------
 
+library(tidyverse)
 
 marco <- tribble(
   ~consec,          ~nombre,    ~gasto,
@@ -120,9 +121,67 @@ sum(marco$gasto)
 vi <- ht |> 
       mutate(vi = (ty - Ety)^2*p_s)  
 
-sum(vi$vi)
+
+var <- sum(vi$vi)
 
 N^2/n*(1-n/N)*var(marco$gasto)
+
+#-------------------------------------------- confiabilidad
+
+total_verdadero <- sum(marco$gasto)
+
+vi.2 <- vi %>%
+        rowwise() %>% 
+        mutate(li = ty-1.96*sqrt(var)) %>% 
+        mutate(ls = ty+1.96*sqrt(var)) %>% 
+        mutate(inclusion = ifelse(total_verdadero >=li & total_verdadero <= ls, 1,0))
+
+sum(vi.2$p_s*vi.2$inclusion)
+sum(vi.2$ty * vi.2$p_s)
+
+sesgo0 <- 0
+sesgo1 <- 0.05 * sqrt(var)
+sesgo2 <- 0.1 * sqrt(var)
+sesgo3 <- 0.3 * sqrt(var)
+sesgo4 <- 0.5 * sqrt(var)
+sesgo5 <- 1 * sqrt(var)
+sesgo6 <- 1.5 * sqrt(var)
+sesgo7 <- 2.0 * sqrt(var)
+
+sesgos <- function(sesgo){
+  vi %>%
+    rowwise() %>% 
+    mutate(li = (ty + sesgo)-1.96*sqrt(var)) %>% 
+    mutate(ls = (ty + sesgo)+1.96*sqrt(var)) %>% 
+    mutate(inclusion = ifelse(total_verdadero >=li & total_verdadero <= ls, 1,0)) |> 
+    mutate(conf = inclusion * p_s) |> 
+    pull(conf) |> sum()
+}
+
+s0 <- sesgos(sesgo0)
+s1 <- sesgos(sesgo1)
+s2 <- sesgos(sesgo2)
+s3 <- sesgos(sesgo3)
+s4 <- sesgos(sesgo4)
+s5 <- sesgos(sesgo5)
+s6 <- sesgos(sesgo6)
+s7 <- sesgos(sesgo7)
+      
+
+sesgos <- data.frame(
+  sesgo_rel = c(0, 0.05, 0.1, 0.3, 0.5, 1, 1.5,2),
+  confiabilidad = c(s0, s1, s2, s3, s4, s5, s6, s7)
+)
+
+
+sesgos |> 
+  ggplot(aes(x = sesgo_rel, y = confiabilidad, group = 1)) +
+  geom_line() +
+  geom_point() + 
+  ylim(0, 1) +
+  theme_bw()
+
+
 
 #### ------- Giovany Babativa, PhD
 #-- Este material ha sido creado por [Giovany Babativa-Márquez](https://github.com/jgbabativam) y es 
