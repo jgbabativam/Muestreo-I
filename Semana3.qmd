@@ -443,6 +443,109 @@ Se desea lanzar un nuevo producto a un target específico pero se desea saber si
 Estime la proporción de mujeres de la población que preferirán el producto, calcule el cve.
  
 
+## Ejercicio
+
+Para el ejercicio de los acres del censo de agricultura de Estados Unidos suponga que se hace un muestreo ESTMAS así:
+
+<br>
+
+<div style="font-size: 0.8em;">
+
+
+**Estrato**    | **Nro. Granj** | **Muestra** |
+|--------------|----------------|-------------|
+|Noroeste (NE) |        220     |         21  |
+|Norte-Centro (NC) |       1054 |        103 |
+|   Sur (S) |       1382  |        135 |
+| Oeste (W) |        422    |           41 |
+| Total     |       3078  |        300 |
+
+
+</div>
+
+## Ejercicio
+
+<br>
+
+1. Use R para extraer una muestra del archivo **agpop.sav** bajo el diseño propuesto.
+2. Usando el archivo **agstrat.sav** estime el total de acres dedicados a la agricultura dentro de cada región.
+3. Compare la estrategia de dominios vs estratos usando efecto de diseño. Concluya.
+
+# TAMAÑO DE LA MUESTRA {background-color="#0077b6"}
+
+## Tamaño de Muestra y asignación por estrato
+
+En general no existe una fórmula mágica que indique el tamaño de muestra apropiado sino que éste debe ser establecido de acuerdo a la estrategia muestral seleccionada.
+
+Se debe controlar la **precisión** y la **confiabilidad**, tenga en cuenta que bajo un diseño muestral $P(\cdot)$ un intervalo de confianza de $100(1-\alpha)\%$ para la media poblacional está dado por:
+$$\left(\overline{y}_s-\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}, \overline{y}_s+\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}\right)$$
+
+## Tamaño de Muestra
+
+Recuerde que por T.C.L se tiene que $\sum_iX_i$ sigue una distribución normal y por tanto:
+
+\begin{align*}
+P\left(-z_{1-\alpha/2}<\frac{\overline{y}_s-\overline{y}_U}{\sqrt{V_P(\overline{y}_s)}}<z_{1-\alpha/2}\right)=1-\alpha \\ 
+P\left(\left|\overline{y}_s-\overline{y}_U\right|<z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}\right)=1-\alpha \\ 
+P\left(\left|\overline{y}_s-\overline{y}_U\right|<e\right)=1-\alpha
+\end{align*} 
+
+. . . 
+
+La cantidad a minimizar es $e$. En encuestas donde el parámetro de interés es una proporción se sugiere $e=0.03$ y $1-\alpha=0.95$.
+
+
+## Ejemplo: M.A.S.
+
+En $MAS$:
+$$\widehat{V}(\overline{y}_s)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}$$ 
+
+. . . 
+
+Un intervalo de confianza del $100(1-\alpha)\%$ para $\overline{y}_U$ bajo diseño $MAS$ es: 
+
+. . . 
+
+$$\overline{y}_s\pm \underbrace{z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}}_e$$ 
+
+## Ejemplo: M.A.S.
+
+Se desea: 
+$$z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}<e$$
+
+. . . 
+
+Al despejar $n$ se obtiene:
+
+\begin{align}\label{tamMue}
+n&>\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2+\frac{z_{1-\alpha/2}^2S^2_{y_s}}{N}}\\ 
+&=\frac{n_0}{1+\frac{n_0}{N}}
+\end{align} 
+
+con $n_0=\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2}$.
+
+
+## Ejemplo M.A.S. caso Proporción
+
+Suponga que en un municipio de $N=1251$ habitantes se desea estimar la proporción de personas que piensan votar por un determinado candidato, para ello se aplicará un muestreo aleatorio simple y se desea obtener un margen de error máximo del $3\%$ con una confiabilidad de $95\%$. Calcule el tamaño de muestra que debe utilizarse en el proyecto. 
+
+. . . 
+
+<div style="font-size: 0.6em;">
+
+\begin{align*}
+S^2_{y}&=\frac{1}{N-1}\sum_U\left(y_k-\overline{y}_U\right)^2 \\
+&=\frac{1}{N-1}\left(\sum_Uy_k^2-N\overline{y}_U^2\right) \\
+&=\frac{N}{N-1}P_d\left(1-P_d\right)\doteq P_d\left(1-P_d\right)
+\end{align*} 
+
+</div>
+
+_Graficar la función para determinar valor adecuado de $P_d$._
+
+
+
+
 ```{r}
 #pagedown::chrome_print("path-to-file.html")
 ```
