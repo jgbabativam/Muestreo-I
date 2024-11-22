@@ -323,6 +323,153 @@ library(countdown)
 countdown(minutes = 5, seconds = 00,  right = 0)
 ```
 
+# TAMAÑO DE LA MUESTRA {background-color="#0077b6"}
+
+## Tamaño de Muestra y asignación por estrato
+
+En general no existe una fórmula mágica que indique el tamaño de muestra apropiado sino que éste debe ser establecido de acuerdo a la estrategia muestral seleccionada.
+
+Se debe controlar la **precisión** y la **confiabilidad**, tenga en cuenta que bajo un diseño muestral $P(\cdot)$ un intervalo de confianza de $100(1-\alpha)\%$ para la media poblacional está dado por:
+$$\left(\overline{y}_s-\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}, \overline{y}_s+\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}\right)$$
+
+## Tamaño de Muestra
+
+Recuerde que por T.C.L se tiene que $\sum_iX_i$ sigue una distribución normal y por tanto:
+
+\begin{align*}
+P\left(-z_{1-\alpha/2}<\frac{\overline{y}_s-\overline{y}_U}{\sqrt{V_P(\overline{y}_s)}}<z_{1-\alpha/2}\right)=1-\alpha \\ 
+P\left(\left|\overline{y}_s-\overline{y}_U\right|<z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}\right)=1-\alpha \\ 
+P\left(\left|\overline{y}_s-\overline{y}_U\right|<e\right)=1-\alpha
+\end{align*} 
+
+. . . 
+
+La cantidad a minimizar es $e$. En encuestas donde el parámetro de interés es una proporción se sugiere $e=0.03$ y $1-\alpha=0.95$.
+
+
+## Ejemplo: M.A.S.
+
+En $MAS$:
+$$\widehat{V}(\overline{y}_s)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}$$ 
+
+. . . 
+
+Un intervalo de confianza del $100(1-\alpha)\%$ para $\overline{y}_U$ bajo diseño $MAS$ es: 
+
+. . . 
+
+$$\overline{y}_s\pm \underbrace{z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}}_e$$ 
+
+## Ejemplo: M.A.S.
+
+Se desea: 
+$$z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}<e$$
+
+. . . 
+
+Al despejar $n$ se obtiene:
+
+\begin{align}\label{tamMue}
+n&>\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2+\frac{z_{1-\alpha/2}^2S^2_{y_s}}{N}}\\ 
+&=\frac{n_0}{1+\frac{n_0}{N}}
+\end{align} 
+
+con $n_0=\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2}$.
+
+
+## Ejemplo M.A.S. caso Proporción
+
+Suponga que en un municipio de $N=1251$ habitantes se desea estimar la proporción de personas que piensan votar por un determinado candidato, para ello se aplicará un muestreo aleatorio simple y se desea obtener un margen de error máximo del $3\%$ con una confiabilidad de $95\%$. Calcule el tamaño de muestra que debe utilizarse en el proyecto. 
+
+. . . 
+
+<div style="font-size: 0.6em;">
+
+\begin{align*}
+S^2_{y}&=\frac{1}{N-1}\sum_U\left(y_k-\overline{y}_U\right)^2 \\
+&=\frac{1}{N-1}\left(\sum_Uy_k^2-N\overline{y}_U^2\right) \\
+&=\frac{N}{N-1}P_d\left(1-P_d\right)\doteq P_d\left(1-P_d\right)
+\end{align*} 
+
+</div>
+
+_Graficar la función para determinar valor adecuado de $P_d$._
+
+
+
+
+## Tamaño de Muestra: M.A.S. - Proporción 
+
+$$n_0=\frac{1.96^2(0.5)(1-0.5)}{0.03^2}\approx 1067$$
+
+. . . 
+
+Entonces el tamaño de muestra requerido es: 
+
+. . . 
+
+$$n=\frac{1067}{1+\frac{1067}{1251}}=576$$ 
+
+. . . 
+
+Note que $n_0$ corresponde al tamaño de muestra al ignorar la corrección para poblaciones finitas. 
+
+
+## Ejercicio
+
+<span style="color:#FF8D21"> Tu turno </span>
+
+Suponga varios márgenes de error y grafique la función de tamaños de muestra para este ejercicio. Luego suponga un universo más grande y haga el mismo ejercicio ¿En términos proporcionales que puede decir del tamaño de la muestra frente al universo en ambos ejercicios?
+
+## Tamaño de Muestra: M.A.S. - Medias, Totales 
+
+<br>
+En el caso de estimación de la media o de totales es necesario considerar una precisión relativa, siguiendo los mismo pasos se llega a:
+
+$$P\left(\left|\frac{\overline{y}_s-\overline{y}_U}{\overline{y}_U}\right|<e\right)=1-\alpha$$
+$$P\left(|\overline{y}_s-\overline{y}_U|<e|\overline{y}_U|\right)=1-\alpha$$
+Así que en la fórmula del tamaño de la muestra se debe reemplazar $e$ por $e|\overline{y}_U|$.
+
+
+## Tamaño de Muestra: M.A.S. - Medias, Totales 
+
+<br>
+
+\begin{align}
+n&=\frac{z^2_{1-\alpha/2}S^2_{y}}{\left(e\overline{y}_U\right)^2+\frac{z^2_{1-\alpha/2}S^2_{y}}{N}} \\[0.4cm]
+ &=\frac{z^2_{1-\alpha/2}CV^2(y)}{e^2+\frac{z^2_{1-\alpha/2}CV^2(y)}{N}}
+\end{align}
+
+## Tamaño de Muestra: M.A.S. - Medias, Totales 
+
+Use la base \textit{agpop.sav} y extraiga una muestra aleatoria simple de tamaño $n=40$, asuma que esta fue una muestra piloto utilizada para validar las herramientas de medición pero a partir de ella también puede estimar el comportamiento de las variables de interés para hallar el $CV(y)$. Suponga que se desea un error relativo inferior al $10\%$ determine el tamaño de la muestra que necesitaría para ejecutar el proyecto.
+
+## Tamaño de Muestra: Observaciones
+
+<br>
+
+- Para hacer los cálculos de tamaño de muestra use una prueba piloto de la investigación. Lorh (2000) establece que este es probablemente el mejor método.
+- Use información secundaria, es raro que sea la primera vez que se estudie algo relativo a su investigación. Es posible tener acceso a fuentes administrativas (Ejemplo: DANE, Ministerios, etc) que pueden tener estimaciones de la varianza de cifras relacionadas con el estudio.
+
+## Tamaño de Muestra: Observaciones
+
+<br>
+
+- Use una distribución empírica para estimar la varianza. Por ejemplo, algunos autores sugieren que las variables económicas suelen tener distribuciones sesgadas a la derecha que pueden modelarse con distribuciones chi-cuadrado.
+- En la medida que el diseño muestral se vuelve más complejo (estratificado, multietápico de conglomerados o elementos en algunas etapas) no es tan fácil llegar a fórmulas que proporcionen el tamaño de muestra adecuado, así que es necesario recurrir a métodos de Monte Carlo para hallar los tamaños de muestra basados en las fórmulas de la varianza del diseño muestral.
+
+## Tamaño de muestra en diseños complejos
+
+<br>
+
+$$n \geq \frac{z_{1-\alpha/2}^2 S^2_y DEFF}{\varepsilon^2+\frac{z_{1-\alpha/2}^2 S^2_y DEFF}{N} } $$
+
+
+. . . 
+
+$$DEFF = \frac{V_{P}(\hat{\theta})}{V_{MAS}(\hat{\theta})} $$
+
+
 # MUESTREO ESTRATIFICADO {background-color="#0077b6"}
 
 ## Definiciones
@@ -471,78 +618,119 @@ Para el ejercicio de los acres del censo de agricultura de Estados Unidos supong
 2. Usando el archivo **agstrat.sav** estime el total de acres dedicados a la agricultura dentro de cada región.
 3. Compare la estrategia de dominios vs estratos usando efecto de diseño. Concluya.
 
-# TAMAÑO DE LA MUESTRA {background-color="#0077b6"}
 
-## Tamaño de Muestra y asignación por estrato
+## Asignación de Muestra por Estrato
 
-En general no existe una fórmula mágica que indique el tamaño de muestra apropiado sino que éste debe ser establecido de acuerdo a la estrategia muestral seleccionada.
+<br>
 
-Se debe controlar la **precisión** y la **confiabilidad**, tenga en cuenta que bajo un diseño muestral $P(\cdot)$ un intervalo de confianza de $100(1-\alpha)\%$ para la media poblacional está dado por:
-$$\left(\overline{y}_s-\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}, \overline{y}_s+\underbrace{z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}}_\text{margen de error}\right)$$
+Con frecuencia se requiere controlar la muestra con el fin de disminuir varianza, garantizar dispersión, entre otros. Si ya se tiene calculado un tamaño de muestra global (para obtener resultados a nivel general y no por estrato) se pueden asignar los tamaños de muestra de diferentes maneras según el objetivo que se busque. Debe tener en cuenta que si su objetivo es comparar los resultados entre los diferentes estratos debe calcular un tamaño de muestra de forma independiente para cada estrato y así garantizar una precisión determinada en cada estrato.
 
-## Tamaño de Muestra
 
-Recuerde que por T.C.L se tiene que $\sum_iX_i$ sigue una distribución normal y por tanto:
+## Afijación Proporcional
 
-\begin{align*}
-P\left(-z_{1-\alpha/2}<\frac{\overline{y}_s-\overline{y}_U}{\sqrt{V_P(\overline{y}_s)}}<z_{1-\alpha/2}\right)=1-\alpha \\ 
-P\left(\left|\overline{y}_s-\overline{y}_U\right|<z_{1-\alpha/2}\sqrt{V_P(\overline{y}_s)}\right)=1-\alpha \\ 
-P\left(\left|\overline{y}_s-\overline{y}_U\right|<e\right)=1-\alpha
-\end{align*} 
+<br>
+
+Se debe usar cuando se puede suponer que la variable de interés tiene varianzas similares en todos los estratos. 
 
 . . . 
 
-La cantidad a minimizar es $e$. En encuestas donde el parámetro de interés es una proporción se sugiere $e=0.03$ y $1-\alpha=0.95$.
+$$n_j=n*\frac{N_jS^2_{U_j}}{\sum_{h=1}^HN_hS^2_{U_h}}=n*\frac{N_j}{\sum_{h=1}^HN_h}=n*\frac{N_j}{N}$$
+. . . 
+
+Muy usada a menudo pero sin probar que $S^2_{y_{U_h}}=S^2_{y_h}$ lo cual evidentemente está mal.
+
+## Afijación Proporcional
+
+<br>
+
+Para la muestra de **agStrat** calcule un tamaño de muestra global y asigne los tamaños de muestra por estrato de manera proporcional. Discuta el procedimiento.
 
 
-## Ejemplo: M.A.S.
+## Afijación $X$-óptima
 
-En $MAS$:
-$$\widehat{V}(\overline{y}_s)=\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}$$ 
+<br>
+
+Se debe usar cuando $S^2_h$ varían mucho. El objetivo de la asignación óptima consiste obtener la mayor cantidad de información al menor costo. Se debe contar con $x$ altamente correlacionado con $y$ o con una prueba piloto. La función de costo: 
 
 . . . 
 
-Un intervalo de confianza del $100(1-\alpha)\%$ para $\overline{y}_U$ bajo diseño $MAS$ es: 
+$$C=c_0+\sum_{h=1}^Hn_hc_h,$$ 
+
+## Afijación $X$-óptima
+
+<br>
+
+con $C$ el costo total, $c_0$ los costos adicionales y $c_h$ el costo en el estrato $h$ que varía dependiendo de $h$. 
+
+$$n_j=n*\left(\frac{\frac{N_jS_{x_j}}{\sqrt{c_j}}}{\frac{\sum_{h=1}^HN_hS_{x_h}}{\sqrt{c_h}}}\right)$$
+
+## Afijación de Neyman
+
+<br>
+
+Es un caso particular de la asignación óptima y se usa si $c_h=c_f$, es decir, los costos son constantes para todos los estratos.
+
+$$n_j=n*\left(\frac{N_jS_{x_j}}{\sum_{h=1}^HN_hS_{x_h}}\right)$$
+
+En general esta asignación proporciona un estimador con menor varianza que la asignación proporcional.
+
+## Afijación Proporcional al Tamaño
+
+<br>
+
+Es una variación de la asignación proporcional, se usa si se cumple que el coeficiente de variación $CV_h=CV_f$ para todos los estratos:
+
+$$n_j=n*\frac{t_{X_{U_j}}}{t_{X}}$$
+## Afijación de potencia
+
+<br>
+
+Sea $0\leq \alpha \leq 1$ entonces:
+
+$$n_j=n*\frac{t^\alpha_{X_{U_j}}}{\sum_{h=1}^Ht^\alpha_{X_h}}$$
+
+Analice los casos $\alpha=1$ y $\alpha=0$. 
+
+## Delimitación de los estratos
+
+<br>
+
+En muestreo estratificado se busca homogeneidad dentro y heterogeneidad entre estratos. Este es un problema de clasificación que se puede resolver mediante métodos multivariados (cluster analysis). Sin embargo en muestreo se han establecido algunos métodos como:
+
+
+- Caso $IF-MAS$: Método de Hidroglou (1986).
+- Método de Dalenius y Hodges (1957).
+- LH
+- Geométrico
+
+## Delimitación de los estratos
+
+Usando la base **Delimitación de estratos.xls** defina subconjuntos de 2 y 3 estratos usando los siguientes métodos:
+
+- Algoritmo de conglomerados jerárquicos.
+- Algoritmo de conglomerados de $K-$medias.
+- Hidroglou.
+- Dalenius y Hodges.
+
+# MUESTREO DE CONGLOMERADOS Y BIETAPICO {background-color="#0077b6"}
+
+## Introducción
+
+Hemos visto muestreos donde la población está al alcance por medio de un marco de lista. Sin embargo, en la mayoría de situaciones esto no ocurre y se debe llegar a la unidad de observación a partir de unidades de muestreo que las contengan. 
 
 . . . 
 
-$$\overline{y}_s\pm \underbrace{z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}}_e$$ 
-
-## Ejemplo: M.A.S.
-
-Se desea: 
-$$z_{1-\alpha/2}\sqrt{\frac{1}{n}\left(1-\frac{n}{N}\right)S^2_{y_s}}<e$$
-
-. . . 
-
-Al despejar $n$ se obtiene:
-
-\begin{align}\label{tamMue}
-n&>\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2+\frac{z_{1-\alpha/2}^2S^2_{y_s}}{N}}\\ 
-&=\frac{n_0}{1+\frac{n_0}{N}}
-\end{align} 
-
-con $n_0=\frac{z_{1-\alpha/2}^2S^2_{y_s}}{e^2}$.
+Suponga que desea estimar el porcentaje de estudiantes de colegios que han sido víctimas de algún tipo de agresión, claramente usted no tiene acceso a un listado de todos los estudiantes de todos los colegios (marco de lista), pero si puede tener acceso al listado de colegios y direcciones (marco de áreas) haciendo un derecho de petición a la secretaría de educación que corresponda o al Ministerio de Educación Nacional.
 
 
-## Ejemplo M.A.S. caso Proporción
+## Muestreo de Conglomerados y Muestreo Bietápico
 
-Suponga que en un municipio de $N=1251$ habitantes se desea estimar la proporción de personas que piensan votar por un determinado candidato, para ello se aplicará un muestreo aleatorio simple y se desea obtener un margen de error máximo del $3\%$ con una confiabilidad de $95\%$. Calcule el tamaño de muestra que debe utilizarse en el proyecto. 
+Entonces usted puede seleccionar $n_I$ colegios y hacer a todos los estudiantes o seleccionar $n_i$ colegios y hacer $n_j$ estudiantes en cada colegio.
 
-. . . 
+1. La primera situación se denomina: **Muestreo de Conglomerados** y consiste en que una vez seleccionada una unidad de muestreo se aplica censo.
+2. La segunda situación se denomina: **Muestreo Bietápico** y consiste en que una vez seleccionada una unidad de muestreo se selecciona otra muestra al interior manteniendo algunos principios fundamentales.
 
-<div style="font-size: 0.6em;">
-
-\begin{align*}
-S^2_{y}&=\frac{1}{N-1}\sum_U\left(y_k-\overline{y}_U\right)^2 \\
-&=\frac{1}{N-1}\left(\sum_Uy_k^2-N\overline{y}_U^2\right) \\
-&=\frac{N}{N-1}P_d\left(1-P_d\right)\doteq P_d\left(1-P_d\right)
-\end{align*} 
-
-</div>
-
-_Graficar la función para determinar valor adecuado de $P_d$._
-
+En este ejemplo el colegio es la unidad de muestreo, siendo también el conglomerado en la primera situación y para ambos casos el estudiante es la unidad de observación.
 
 
 
