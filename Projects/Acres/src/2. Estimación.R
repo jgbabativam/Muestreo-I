@@ -1,5 +1,6 @@
 rm(list = ls())
 
+options(scipen = 9999)
 library(pacman)
 p_load(tidyverse, survey, srvyr, remotes, haven, srvyrexploR, skimr,
        readxl, writexl, skimr, DataExplorer)
@@ -30,6 +31,8 @@ table(datos$dominio, useNA = "a")
 
 datos$FEXP <- nrow(marco)/nrow(datos)
 
+write_xlsx(datos, "output/encuesta.xlsx")
+
 dsg <- datos |> 
        as_survey_design(ids = 1,
                         fpc = NI,
@@ -45,3 +48,28 @@ class(dsg)
 
 ty <- sum(marco$acres92)
 ybU <- mean(marco$acres92)
+
+
+(estimaprop <- dsg |> 
+              group_by(dominio) |> 
+              summarise(prop = survey_prop(vartype = c("se", "ci"), level = 0.95)))
+
+
+(estimacion <- dsg |> 
+               group_by(Region) |> 
+               summarise(Total = survey_total(acres92, vartype = c("se", "cv", "ci")),
+                         Promedio = survey_mean(acres92, vartype = c("se", "cv", "ci"))))
+
+
+marco |> 
+  group_by(Region) |> 
+  summarise(ty = sum(acres92))
+
+
+marco |> 
+  count(Region, name = "Nh") |> 
+  left_join( datos |> 
+  count(Region, name = "nh")) |> 
+  mutate(PropU = Nh/sum(Nh),
+         PropS = nh/sum(nh))
+
