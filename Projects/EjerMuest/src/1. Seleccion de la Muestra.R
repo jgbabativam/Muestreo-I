@@ -1,3 +1,7 @@
+################################----
+### Tarea 1. Selección de la muestra de hogares
+###  Diseño MAS(35, 10)
+
 
 rm(list = ls())
 
