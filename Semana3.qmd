@@ -275,7 +275,9 @@ Explore los datos usando `skim()` y `glimpse()`
 datos$FEXP <- nrow(marco)/nrow(datos)
 
 dsg <- datos |> 
+       mutate(NI = nrow(marco)) |> 
        as_survey_design(ids = 1,
+                        fpc = NI,
                         weights = FEXP,
                         nest = T)
 ```
@@ -681,6 +683,7 @@ En general esta asignación proporciona un estimador con menor varianza que la a
 Es una variación de la asignación proporcional, se usa si se cumple que el coeficiente de variación $CV_h=CV_f$ para todos los estratos:
 
 $$n_j=n*\frac{t_{X_{U_j}}}{t_{X}}$$
+
 ## Afijación de potencia
 
 <br>
