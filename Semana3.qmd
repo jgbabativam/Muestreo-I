@@ -512,7 +512,7 @@ $$DEFF = \frac{V_{P}(\hat{\theta})}{V_{MAS}(\hat{\theta})} $$
 
 <div style="text-align: justify;">
 
-1. La cantidad de estratos es inversamente proporcional a la varianza y proporcional a los costos. En general al llegar a determinado número de estratos no se gana mucho en disminuir varianza y por el contrario se invierte mucho dinero.
+1. La cantidad de estratos es directamente proporcional a la varianza y proporcional a los costos. En general al llegar a determinado número de estratos no se gana mucho en disminuir varianza y por el contrario se invierte mucho dinero.
 2. Delimitación de los estratos (Hidroglou, Dalenius, Análisis multivariante de clúster).
 3. Variable de estratificación - ¿con respecto a qué variable se debe estratificar?.
 4. Asignación de muestra por estratos.
