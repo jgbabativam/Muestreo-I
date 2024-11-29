@@ -8,3 +8,5 @@ Semana 1: https://jgbabativam.github.io/Muestreo-I/Semana1.html
 Semana 2: https://jgbabativam.github.io/Muestreo-I/Semana2.html
 
 Semana 3: https://jgbabativam.github.io/Muestreo-I/Semana3.html
+
+Semana 4: https://jgbabativam.github.io/Muestreo-I/Semana4.html
